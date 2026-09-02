@@ -16,6 +16,8 @@ export interface RoverFields {
   payloadSize: number;
   payloadMass: number;
   payloadX: number;
+  rollers: number;
+  rollerD: number;
 }
 
 export function fieldsFromSpec(spec: RoverSpec): RoverFields {
@@ -33,6 +35,8 @@ export function fieldsFromSpec(spec: RoverSpec): RoverFields {
     payloadSize: spec.payload.size,
     payloadMass: spec.payload.massKg,
     payloadX: spec.payload.x,
+    rollers: spec.rollers,
+    rollerD: spec.rollerR * 2,
   };
 }
 
@@ -53,6 +57,8 @@ export function specFromFields(base: RoverSpec, f: RoverFields): RoverSpec {
     massKg: f.massKg,
     cg: { x: f.cgX, y: Math.min(f.cgY, topY) },
     payload: { size: f.payloadSize, massKg: f.payloadMass, x: f.payloadX },
+    rollers: Math.round(f.rollers),
+    rollerR: f.rollerD / 2,
   };
 }
 

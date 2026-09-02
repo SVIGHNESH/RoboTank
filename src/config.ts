@@ -28,6 +28,9 @@ export interface RoverSpec {
   cg: { x: number; y: number };
   /** Cubic payload box carried on the lid. */
   payload: PayloadSpec;
+  /** Support rollers under the bottom run, spaced evenly between sprocket and idler. */
+  rollers: number;
+  rollerR: number;
 }
 
 export interface PayloadSpec {
@@ -59,6 +62,8 @@ export const REV21: RoverSpec = {
   massKg: 3.07,
   cg: { x: 42, y: 88 },
   payload: DEFAULT_PAYLOAD,
+  rollers: 0,
+  rollerR: 15,
 };
 
 /** Δ10, adopted in Rev 2.2: the only track length the physics model climbs the first riser with. */
@@ -69,6 +74,7 @@ export const DELTA10: RoverSpec = {
   wheelbase: 620,
   /** Longer plates, 49-link tracks and four support rollers, per RT-100 sheet 4 Rev 2.2. */
   massKg: 4.0,
+  rollers: 2,
 };
 
 export const SPECS: Record<"rev21" | "delta10", RoverSpec> = { rev21: REV21, delta10: DELTA10 };

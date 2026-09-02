@@ -21,7 +21,7 @@ pnpm sim        # headless climb test for both track lengths, no browser needed
 - **One control panel**: Play, Pause, Reset, and Auto. With Auto on the rover holds forward and stops on the landing or reports a tip-over. With Auto off, W/S/A/D drive and Space brakes.
 - **Track presets** for Rev 2.1 (450 mm) and Rev 2.2 Δ10 (700 mm), plus a Custom option.
 - **Payload box** on the lid, a cube with editable size, weight and fore-aft position. Its weight adds to the total mass and moves the combined centre of gravity in the physics, so you can see what a load on top does to the climb.
-- **Editable dimensions**: stair riser, tread, step count and width; rover wheelbase, sprocket and idler diameters, idler raise, track width, bay width, height, mass and centre of gravity. Any change rebuilds the model, the stair and the physics, so you can test a design against a stair before drawing it. The panel also reports the stair pitch, nosing pitch and floor-to-second-nosing distance, the number the wheelbase has to beat.
+- **Editable dimensions**: stair riser, tread, step count and width; rover wheelbase, sprocket and idler diameters, idler raise, support roller count and diameter, track width, bay width, height, mass and centre of gravity. Any change rebuilds the model, the stair and the physics, so you can test a design against a stair before drawing it. The panel also reports the stair pitch, nosing pitch and floor-to-second-nosing distance, the number the wheelbase has to beat.
 
 URL hashes: `#stair` places the rover on the stair, `#climb` starts the climb. Add `-long` (`#long`, `#stair-long`, `#climb-long`) to use the Δ10 track.
 

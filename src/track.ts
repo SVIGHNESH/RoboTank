@@ -102,6 +102,16 @@ export class TrackBelt {
     this.spinners.push({ mesh: idler, r: spec.idlerR });
     this.cylinder(4, spec.trackW + 30, materials.axle, d.xS, d.yS, 16);
     this.cylinder(4, spec.trackW + 30, materials.axle, d.xI, d.yI, 16);
+
+    // support rollers ride on the inside of the bottom run, lower than the sprocket and idler axles
+    const runEnd = d.xI - spec.idlerR - 12;
+    const rollerY = spec.beltT + spec.lug + spec.rollerR;
+    for (let k = 1; k <= spec.rollers; k++) {
+      const x = d.xS + ((runEnd - d.xS) * k) / (spec.rollers + 1);
+      const roller = this.cylinder(spec.rollerR, spec.trackW - 8, materials.steel, x, rollerY, 28);
+      this.spinners.push({ mesh: roller, r: spec.rollerR });
+      this.cylinder(4, spec.trackW + 14, materials.axle, x, rollerY, 12);
+    }
   }
 
   private cylinder(r: number, len: number, mat: THREE.Material, x: number, y: number, seg: number): THREE.Mesh {
