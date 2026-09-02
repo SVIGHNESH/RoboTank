@@ -1,8 +1,8 @@
 {
-  "name": "robotank",
+  "name": "climblab",
   "version": "2.1.0",
   "private": true,
-  "description": "Stair-climbing tracked IoT rover: 3D model, rigid-body physics and kinematic replay",
+  "description": "ClimbLab: browser simulator for the RoboTank stair-climbing tracked rover, 3D model and rigid-body physics",
   "type": "module",
   "engines": {
     "node": ">=20"

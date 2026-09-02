@@ -1,7 +1,8 @@
-# RoboTank
+# ClimbLab
 
-Stair-climbing tracked IoT rover, revision 2.2 (Δ10 700 mm track).
+Browser simulator for RoboTank, a stair-climbing tracked IoT rover planned for a future build, at revision 2.2 (Δ10 700 mm track).
 This repository holds the interactive 3D model with rigid-body physics, plus the drawing set and operating description it is built from.
+RoboTank is the name of the rover; ClimbLab is the name of this tool.
 
 ## Run
 
