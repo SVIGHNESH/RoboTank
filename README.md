@@ -51,3 +51,7 @@ src/main.ts      wiring and frame loop
 scripts/sim.ts   headless climb test
 docs/            Rev 2.2 drawing set and PDF, operating description, parts and costing, stills
 ```
+
+## Credits
+
+Built by Vighnesh Shukla at the Software Development Cell (SDC), RBMI.
