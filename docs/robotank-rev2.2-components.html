@@ -1,0 +1,185 @@
+<title>RoboTank Parts and Costing</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+ --bg:#F4F3EE; --paper:#FBFAF7; --ink:#1A1A1A; --muted:#5B5B58; --rule:#C9C7BF; --faint:#ECEAE3;
+ --rev:#B42318; --ok:#1F6F3F; --warn:#9A5B00;
+ --fs:"Barlow",system-ui,sans-serif; --fd:"Barlow Semi Condensed","Arial Narrow",sans-serif; --fm:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#17181A;--paper:#1F2124;--ink:#ECEAE3;--muted:#A6A49C;--rule:#3B3D42;--faint:#2A2C31;--rev:#E5675A;--ok:#5FB57F;--warn:#E0A64A}}
+:root[data-theme="dark"]{--bg:#17181A;--paper:#1F2124;--ink:#ECEAE3;--muted:#A6A49C;--rule:#3B3D42;--faint:#2A2C31;--rev:#E5675A;--ok:#5FB57F;--warn:#E0A64A}
+body{background:var(--bg);color:var(--ink);font-family:var(--fs);margin:0;padding:32px 20px 60px;font-size:15px;line-height:1.55}
+main{max-width:1040px;margin:0 auto;background:var(--paper);border:1px solid var(--rule);padding:40px 48px}
+header{display:grid;grid-template-columns:1fr auto;gap:16px;border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:28px}
+header h1{font-family:var(--fd);font-weight:700;font-size:34px;margin:0;line-height:1.05;text-wrap:balance}
+header p{margin:6px 0 0;color:var(--muted);max-width:62ch}
+.docid{font-family:var(--fm);font-size:12px;color:var(--muted);text-align:right;line-height:1.7}
+h2{font-family:var(--fd);font-weight:700;font-size:20px;letter-spacing:.04em;text-transform:uppercase;margin:36px 0 10px;padding-bottom:4px;border-bottom:1.5px solid var(--ink)}
+p{max-width:70ch;margin:0 0 10px}
+ul{max-width:70ch;padding-left:22px;margin:0 0 10px}li{margin-bottom:4px}
+.sum{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--ink);margin:0 0 8px}
+.sum div{padding:10px 14px;border-left:1px solid var(--rule)}
+.sum div:first-child{border-left:0}
+.sum span{display:block;font-family:var(--fd);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sum b{font-family:var(--fd);font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+.sum i{display:block;font-style:normal;color:var(--muted);font-size:13px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums;margin:8px 0 12px}
+th,td{text-align:left;padding:6px 9px;border:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--fd);font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-size:11.5px;background:var(--faint)}
+td.n{font-family:var(--fm);white-space:nowrap;text-align:right;font-size:12.5px}
+td.part{font-family:var(--fd);font-weight:600;font-size:14.5px;min-width:150px}
+td.part small{display:block;font-family:var(--fs);font-weight:400;color:var(--muted);font-size:12.5px}
+td.why{min-width:280px}
+tr.sub td{background:var(--faint);font-family:var(--fd);font-weight:600;text-align:right}
+.pill{display:inline-block;font-family:var(--fd);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:0 6px;border:1px solid currentColor;border-radius:2px;margin-left:4px}
+.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.rev{color:var(--rev)}
+figcaption,.note{color:var(--muted);font-size:13px;max-width:72ch}
+@media (max-width:760px){main{padding:24px 18px}header{grid-template-columns:1fr}.docid{text-align:left}.sum{grid-template-columns:1fr 1fr}}
+:focus-visible{outline:2px solid var(--rev);outline-offset:2px}
+</style>
+<main>
+<header>
+ <div>
+  <h1>Component list and costing, Rev 2.2 (Δ10 track)</h1>
+  <p>Every part needed to build one stair-climbing tracked IoT rover to drawings RT-100-01 to 04 with the Δ10 change applied: 700 mm overall, 620 mm wheelbase. Indian market prices in rupees and the reason each part was chosen over its alternatives. Rows changed by Δ10 are marked.</p>
+ </div>
+ <div class="docid">RT-100-BOM Rev 2.2<br>Supersedes Rev 2.1<br>2026-09-02<br>Prices: Robu.in, Amazon.in, ThinkRobotics, Sept 2026<br>Incl. GST, excl. shipping</div>
+</header>
+
+<div class="sum">
+ <div><span>Electronics</span><b>₹11,770</b><i>controller, drive, sensors, power</i></div>
+ <div><span>Mechanical</span><b>₹11,820</b><i>frame, drive train, tracks, harness</i></div>
+ <div><span>Operator link</span><b>₹3,500</b><i>BLE gamepad</i></div>
+ <div><span>Build total</span><b>₹27,090</b><i>range ₹23,500 to ₹31,000</i></div>
+</div>
+<p class="note">Prices are typical listed prices at the time of writing and move about 10% either way between sellers. Buy the electronics from one Indian distributor where possible: imported single-item orders attract customs and delay. Tools, filament for prototypes and spares are listed separately at the end.</p>
+
+<h2>What Δ10 changes, and why</h2>
+<p>The rigid-body simulation in the project app showed that the Rev 2.1 chassis cannot climb the first 180 mm riser from the floor. With the rear track on the floor and the nosing sliding along the belt, the centre of gravity never passes over the step edge, so the rover pitches to vertical and falls onto its back. Friction, motor torque and approach speed do not change the outcome. A 620 mm wheelbase reaches the second nosing before the rear lifts and climbs the whole flight in the same model.</p>
+<ul>
+ <li><b>Wheelbase 384 → 620 mm, overall 470 → 706 mm.</b> Side plates, floor, deck and lid grow with it.</li>
+ <li><b>Track 33 → 49 links per side.</b> 1.5 kg of TPU instead of 1 kg.</li>
+ <li><b>Four mid-run support rollers added.</b> A 620 mm bottom run sags without them and the lugs would skip the sprocket.</li>
+ <li><b>Mass 3.07 → 4.0 kg</b> per the sheet 4 mass column. Torque per side rises to 0.61 N·m at 35°, still 1.6× inside the motor rating. Runtime drops to about 1.3 h. No electronics change.</li>
+ <li><b>Cost ₹24,360 → ₹27,090</b>, all of it in the drive train and frame.</li>
+</ul>
+
+<h2>1. Controller and camera</h2>
+<div class="tw"><table>
+<tr><th>Part</th><th>Spec</th><th>Qty</th><th>Unit ₹</th><th>Total ₹</th><th>Why this part</th></tr>
+<tr><td class="part">ESP32-S3 CAM board<small>ESP32-S3-WROOM-1 N8R8, OV2640 on DVP, 120° lens (Freenove or generic ESP32-S3-WROOM CAM)</small></td><td>Dual core 240 MHz, 8 MB flash, 8 MB PSRAM, WiFi + BLE 5, camera header</td><td>1</td><td class="n">1,500</td><td class="n">1,500</td><td class="why">One chip does motor PID, the IMU state machine, BLE control and WiFi telemetry. Two cores let the control loop on core 1 never wait on the network. The N8R8 variant has PSRAM for the camera frame buffer, so the earlier separate ESP32-CAM board and its undefined link (Δ6) are gone. Plain ESP32 lacks native USB and enough free GPIO once the camera bus is taken. A Raspberry Pi would need its own 5 V 3 A rail and boots in 30 s; not needed for a 200 Hz loop.</td></tr>
+<tr><td class="part">USB-C cable + FTDI-free flashing<small>data cable, 1 m</small></td><td>USB 2.0 data</td><td>1</td><td class="n">150</td><td class="n">150</td><td class="why">S3 has native USB so no serial adapter is needed.</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="n">1,650</td><td></td></tr>
+</table></div>
+
+<h2>2. Drive</h2>
+<div class="tw"><table>
+<tr><th>Part</th><th>Spec</th><th>Qty</th><th>Unit ₹</th><th>Total ₹</th><th>Why this part</th></tr>
+<tr><td class="part">Gearmotor with encoder<small>JGB37-520, 12 V, 1:70, 100 rpm, hall encoder 11 PPR</small></td><td>1.0 N·m rated, ~2.5 A at climb load, 770 counts per rev at the shaft</td><td>2</td><td class="n">950</td><td class="n">1,900</td><td class="why">Sheet 2 needed 0.52 N·m per side at 35° for the 3.07 kg Rev 2.1 rover; at the 4.0 kg Δ10 mass it is 0.61 N·m, and this motor gives 1.0 N·m, a 1.6× margin. 100 rpm on the Ø80 sprocket gives 0.42 m/s on level ground and 0.29 m/s at the 70% climb cap. The built-in hall encoder closes the per-track speed loop and drives the yaw hold on stairs; without encoders the rover drifts sideways on a step. 37 mm body fits inboard between the side plates. Cheaper yellow TT motors stall at about 0.1 N·m and have no encoder.</td></tr>
+<tr><td class="part">Motor driver<small>BTS7960 43 A half-bridge pair module, heatsinked</small></td><td>5.5 to 27 V, 16 mΩ on-resistance, 25 kHz PWM, current sense pin</td><td>2</td><td class="n">400</td><td class="n">800</td><td class="why">L298N was rejected (Δ4): it drops 2 to 3 V at load, wastes 5 W as heat and is limited to 2 A per channel, right at the climb current. BTS7960 drops under 0.1 V at 6 A, runs cool, and supports the active-brake PWM the DESCEND mode needs. One module per side, so a failure leaves one track braked rather than both floating.</td></tr>
+<tr><td class="part">Bulk capacitor<small>1000 µF 25 V low-ESR electrolytic</small></td><td>At each driver's supply terminals</td><td>2</td><td class="n">25</td><td class="n">50</td><td class="why">Absorbs the current spikes when a track unloads at a nosing so the bus does not sag and reset the ESP32.</td></tr>
+<tr><td class="part">Ferrite bead on motor leads<small>snap-on, 5 mm cable</small></td><td></td><td>2</td><td class="n">40</td><td class="n">80</td><td class="why">Keeps brush noise off the encoder and I²C lines that run nearby.</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="n">2,830</td><td></td></tr>
+</table></div>
+
+<h2>3. Power</h2>
+<div class="tw"><table>
+<tr><th>Part</th><th>Spec</th><th>Qty</th><th>Unit ₹</th><th>Total ₹</th><th>Why this part</th></tr>
+<tr><td class="part">Li-ion cells<small>18650, 2600 to 3000 mAh, 10 A rated (Samsung 30Q / LG M26 / Molicel)</small></td><td>3S2P pack, 11.1 V nominal, 5200 mAh</td><td>6</td><td class="n">380</td><td class="n">2,280</td><td class="why">5.2 Ah at a 3.5 A average gives about 1.3 h with the heavier Δ10 rover. 18650 Li-ion holds charge better and is safer to store than a LiPo pouch, and cells are sold individually in India with real capacity. 2P keeps the per-cell draw under 3 A during a climb. Buy branded cells; unbranded "9900 mAh" cells deliver under 1 Ah.</td></tr>
+<tr><td class="part">BMS<small>3S 20 A with balance, common port</small></td><td>Over-current, over-discharge at 2.8 V/cell, balance</td><td>1</td><td class="n">220</td><td class="n">220</td><td class="why">Protects the cells if the firmware's 9.6 V cut-off fails. 20 A is above the 15 A fuse so the fuse always blows first.</td></tr>
+<tr><td class="part">Pack assembly<small>nickel strip, kapton, heat shrink, 3S balance lead, XT60 pigtail</small></td><td></td><td>1 set</td><td class="n">300</td><td class="n">300</td><td class="why">Spot-welded, not soldered: soldering heats the cell. If no spot welder is available, buy a pre-built 3S 5200 mAh Li-ion pack with XT60 for about ₹2,800 instead of rows 1 to 3.</td></tr>
+<tr><td class="part">3S balance charger<small>1 to 3 A, XT60 out, balance port</small></td><td></td><td>1</td><td class="n">900</td><td class="n">900</td><td class="why">A balance charger keeps the three groups within 20 mV so the BMS never has to cut a climb short on one weak group.</td></tr>
+<tr><td class="part">5 V buck converter<small>synchronous, 5 V 3 A, 8 to 28 V in (MP2307 or LM2596-HV class module), 470 µF at output</small></td><td>Feeds ESP32, encoders, sensors</td><td>1</td><td class="n">180</td><td class="n">180</td><td class="why">A linear regulator from 11.1 V to 5 V would burn 3 W at 0.5 A; a switcher runs at 90%. 3 A covers the camera's WiFi bursts. Ground star point sits at this module's output (sheet 3).</td></tr>
+<tr><td class="part">Fuse and holder<small>15 A ATO blade, inline holder, 14 AWG</small></td><td></td><td>1 + 2 spare</td><td class="n">90</td><td class="n">90</td><td class="why">Peak draw is 6 A; 15 A gives headroom for stall spikes but clears on a wiring short before the 16 AWG heats.</td></tr>
+<tr><td class="part">Main switch<small>20 A rocker, panel mount</small></td><td></td><td>1</td><td class="n">90</td><td class="n">90</td><td class="why">Rated above the fuse so it never becomes the weak link.</td></tr>
+<tr><td class="part">E-stop<small>Ø22 mushroom, twist-release, 1 NC contact</small></td><td></td><td>1</td><td class="n">280</td><td class="n">280</td><td class="why">Opens the motor supply physically. The NC contact also feeds GPIO 0 so the firmware logs the stop. A software-only stop cannot cover a hung MCU.</td></tr>
+<tr><td class="part">XT60 pairs<small>with heat shrink</small></td><td></td><td>3</td><td class="n">50</td><td class="n">150</td><td class="why">Battery to bus. 60 A rated, keyed, cannot be reversed.</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="n">4,490</td><td></td></tr>
+</table></div>
+
+<h2>4. Sensors</h2>
+<div class="tw"><table>
+<tr><th>Part</th><th>Spec</th><th>Qty</th><th>Unit ₹</th><th>Total ₹</th><th>Why this part</th></tr>
+<tr><td class="part">IMU<small>MPU-6050 breakout (GY-521)</small></td><td>6-axis, I²C, 3.3 V</td><td>1</td><td class="n">160</td><td class="n">160</td><td class="why">Pitch and roll alone select the mode; no heading is needed, so a 9-axis part adds nothing. Cheap, everywhere, well-supported. Mount at the CG, bonded to the deck, not the lid. <span class="pill warn">upgrade path</span> BNO085 (~₹2,200) if drift on long flights becomes a problem.</td></tr>
+<tr><td class="part">Front rangefinder<small>VL53L1X breakout</small></td><td>ToF, 4 m range, I²C, 3.3 V</td><td>1</td><td class="n">700</td><td class="n">700</td><td class="why">Reads the riser at 120 mm to trigger the slow-down. Unlike the HC-SR04 it dropped (Δ7) it is 3.3 V, needs no level shifter, and gives a narrow beam that does not bounce off the tread.</td></tr>
+<tr><td class="part">Cliff rangefinders<small>VL53L0X breakout with XSHUT pin</small></td><td>ToF, 2 m, I²C, 3.3 V</td><td>2</td><td class="n">300</td><td class="n">600</td><td class="why">Look straight down under the front idler; 40 mm on tread, over 60 mm means edge. The short-range L0X is cheaper than the L1X and 60 mm is well inside its range. XSHUT lets the firmware give each one its own I²C address at boot.</td></tr>
+<tr><td class="part">Environment sensor<small>BME680 breakout</small></td><td>Temp, humidity, pressure, gas resistance, I²C 3.3 V</td><td>1</td><td class="n">1,300</td><td class="n">1,300</td><td class="why">One part replaces the DHT11 plus MQ-135 combination: the MQ-135 needed a 5 V heater at 150 mA and an ADC, the BME680 gives an IAQ index over I²C. This is the single expensive sensor; a BME280 (₹350) works if gas readings are not needed.</td></tr>
+<tr><td class="part">I²C pull-ups and divider<small>4k7 ×2, 10k, 2k2, 0.1 µF</small></td><td></td><td>1 set</td><td class="n">40</td><td class="n">40</td><td class="why">Bus pull-ups on a 400 mm daisy chain, and the 10k:2k2 divider for battery sense on GPIO 3.</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="n">2,800</td><td></td></tr>
+</table></div>
+
+<h2>5. Drive train and tracks</h2>
+<div class="tw"><table>
+<tr><th>Part</th><th>Spec</th><th>Qty</th><th>Unit ₹</th><th>Total ₹</th><th>Why this part</th></tr>
+<tr><td class="part">Sprockets<small>Ø80 PCD, 12 T, 30 mm pitch, 3D printed PETG or machined nylon, Ø8 D-bore</small></td><td></td><td>2</td><td class="n">250</td><td class="n">500</td><td class="why">Tooth pitch equals track lug pitch, so the drive is positive, not friction. Printed PETG is fine at this torque; nylon if it wears.</td></tr>
+<tr><td class="part">Idlers<small>Ø60, 3D printed, on 608 bearings</small></td><td></td><td>2 front + 2 rear</td><td class="n">120</td><td class="n">480</td><td class="why">Front idler sits 15 mm raised to give the 35° approach angle that lets the track bite the first riser.</td></tr>
+<tr><td class="part">Mid-run support rollers <span class="pill rev">Δ10</span><small>Ø30, 3D printed, on 608 bearings, two per side at 200 mm spacing</small></td><td></td><td>4</td><td class="n">120</td><td class="n">480</td><td class="why">New with the 620 mm wheelbase. The bottom run between sprocket and idler is 620 mm; unsupported it sags 5 to 8 mm under the rover's weight, the lugs lift off the sprocket teeth under climb torque and skip. Two rollers per side keep the run flat and carry the load on a stair tread.</td></tr>
+<tr><td class="part">Axles<small>Ø8 steel D-shaft, 300 mm, cut to length</small></td><td></td><td>2</td><td class="n">220</td><td class="n">440</td><td class="why">D-flat takes the M4 grub screw so the sprocket cannot slip under climb torque.</td></tr>
+<tr><td class="part">Roller stub axles <span class="pill rev">Δ10</span><small>M8 × 60 hex bolts, nyloc nuts, spacers</small></td><td></td><td>4</td><td class="n">30</td><td class="n">120</td><td class="why">Rollers carry no drive torque, so a bolt through the side plate is enough. No through-axle across the bay, which keeps the battery bay clear.</td></tr>
+<tr><td class="part">Bearings <span class="pill rev">Δ10</span><small>608-2RS</small></td><td></td><td>16</td><td class="n">35</td><td class="n">560</td><td class="why">Cheapest sealed bearing there is, and the side plates are drilled for its 22 mm OD. Eight more for the four support rollers.</td></tr>
+<tr><td class="part">Motor brackets and couplers<small>37 mm motor bracket ×2, 6 mm to 8 mm coupler ×2, shaft collars ×4</small></td><td></td><td>1 set</td><td class="n">550</td><td class="n">550</td><td class="why">Makes each side a bolt-on module: motor, coupler, axle, bearings, sprocket.</td></tr>
+<tr><td class="part">Track links <span class="pill rev">Δ10</span><small>49 links per side, 30 mm pitch, 50 mm wide, TPU 95A, chevron lug</small></td><td>~770 g printed, plus pins</td><td>98 + spares</td><td class="n">—</td><td class="n">3,200</td><td class="why">Loop length is 2 × 620 plus the sprocket and idler wraps, 1,470 mm, so 49 links per side. Cost is 1.5 kg of TPU 95A filament (about ₹3,000) plus Ø3 steel pins. The 10° undercut edge lug is what grips the stair nosing; off-the-shelf rubber tracks are 20 to 30 mm wide and 15 mm pitch and would not span the design's sprocket. Printing links means a worn link is replaced, not the whole track. <span class="pill ok">alt</span> moulded rubber from a cast, higher tooling cost.</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="n">6,330</td><td></td></tr>
+</table></div>
+
+<h2>6. Frame</h2>
+<div class="tw"><table>
+<tr><th>Part</th><th>Spec</th><th>Qty</th><th>Unit ₹</th><th>Total ₹</th><th>Why this part</th></tr>
+<tr><td class="part">Side, floor and deck plates <span class="pill rev">Δ10</span><small>4 mm 6061 aluminium, laser or waterjet cut to RT-100-01 with the Δ10 wheelbase</small></td><td>2 sides 706 × 110, floor and deck 640 × 160, roller bolt holes added</td><td>1 set</td><td class="n">3,300</td><td class="n">3,300</td><td class="why">Aluminium keeps the frame at about 1.8 kg; the same plates in steel would double it and push the CG up. 4 mm is the minimum that holds the 608 bearing seats square under climb load. Quote from a local laser shop with the DXF; sheet cost is about ₹1,300, cutting the rest. <span class="pill ok">save</span> 3 mm sides drop 350 g and about ₹500.</td></tr>
+<tr><td class="part">Lid <span class="pill rev">Δ10</span><small>2 mm aluminium or 3 mm acrylic, 640 × 168</small></td><td></td><td>1</td><td class="n">600</td><td class="n">600</td><td class="why">Carries nothing structural; holds the ESP32 and camera mount. Acrylic is fine and lets the status LED show through.</td></tr>
+<tr><td class="part">Hardware<small>M4 bolts, nyloc nuts, standoffs, M3 for boards, thread locker</small></td><td></td><td>1 kit</td><td class="n">450</td><td class="n">450</td><td class="why">Nyloc on everything that sees track vibration.</td></tr>
+<tr><td class="part">Battery strap and foam<small>velcro strap ×2, 5 mm EVA foam</small></td><td></td><td>1</td><td class="n">120</td><td class="n">120</td><td class="why">Pack sits on the floor plate, strapped, so it cannot shift the CG on a stair.</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="n">4,470</td><td></td></tr>
+</table></div>
+
+<h2>7. Harness</h2>
+<div class="tw"><table>
+<tr><th>Part</th><th>Spec</th><th>Qty</th><th>Unit ₹</th><th>Total ₹</th><th>Why this part</th></tr>
+<tr><td class="part">Power wire<small>14 AWG silicone, red + black, 1 m each; 16 AWG, 2 m each</small></td><td></td><td>1 set</td><td class="n">350</td><td class="n">350</td><td class="why">14 AWG on the battery run, 16 AWG to drivers and motors, per sheet 3. Motors stay at the rear so these runs do not grow with Δ10. Silicone insulation survives the soldering iron and flexing.</td></tr>
+<tr><td class="part">Signal wire and connectors <span class="pill rev">Δ10</span><small>26 AWG, JST-XH 2/4/6 pin kit, JST-SH Qwiic cables ×5 including two 500 mm, XT30 pairs ×2</small></td><td></td><td>1 set</td><td class="n">500</td><td class="n">500</td><td class="why">Every board unplugs. Qwiic cables daisy-chain the five I²C devices without soldering; the front rangefinders are now 250 mm further from the controller, so the I²C chain reaches 650 mm and needs the 4k7 pull-ups fitted at the far end. XT30 on the motors so a drive module comes out as a unit.</td></tr>
+<tr><td class="part">Heat shrink, cable ties, adhesive mounts</td><td></td><td>1 set</td><td class="n">150</td><td class="n">150</td><td class="why">Signal runs are tied away from motor leads, never parallel.</td></tr>
+<tr><td class="part">Status LED<small>5 mm RGB common cathode + resistors</small></td><td></td><td>1</td><td class="n">20</td><td class="n">20</td><td class="why">READY, fault and low-battery indications on the lid.</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="n">1,020</td><td></td></tr>
+</table></div>
+
+<h2>8. Operator link</h2>
+<div class="tw"><table>
+<tr><th>Part</th><th>Spec</th><th>Qty</th><th>Unit ₹</th><th>Total ₹</th><th>Why this part</th></tr>
+<tr><td class="part">BLE gamepad<small>8BitDo Ultimate 2C Bluetooth, or Xbox Wireless Controller</small></td><td>Bluetooth HID, rumble, analog sticks</td><td>1</td><td class="n">3,500</td><td class="n">3,500</td><td class="why">The only channel allowed to move the rover. BLE gives under 30 ms latency against 100 to 300 ms over the cloud, and the Bluepad32 library on the ESP32-S3 speaks both these controllers natively. Rumble carries the "step done" and fault pulses. 8BitDo is about ₹3,000 to ₹3,500; the Xbox controller ₹4,500 to ₹5,500 with better sticks. A ₹600 generic "PC gamepad" often lacks BLE and will not pair.</td></tr>
+<tr class="sub"><td colspan="4">Subtotal</td><td class="n">3,500</td><td></td></tr>
+</table></div>
+
+<h2>Totals</h2>
+<div class="tw"><table>
+<tr><th>Group</th><th>Total ₹</th><th>Share</th></tr>
+<tr><td>1 Controller and camera</td><td class="n">1,650</td><td class="n">6%</td></tr>
+<tr><td>2 Drive</td><td class="n">2,830</td><td class="n">10%</td></tr>
+<tr><td>3 Power</td><td class="n">4,490</td><td class="n">17%</td></tr>
+<tr><td>4 Sensors</td><td class="n">2,800</td><td class="n">10%</td></tr>
+<tr><td>5 Drive train and tracks</td><td class="n">6,330</td><td class="n">23%</td></tr>
+<tr><td>6 Frame</td><td class="n">4,470</td><td class="n">17%</td></tr>
+<tr><td>7 Harness</td><td class="n">1,020</td><td class="n">4%</td></tr>
+<tr><td>8 Operator link</td><td class="n">3,500</td><td class="n">13%</td></tr>
+<tr class="sub"><td>Build total, one rover</td><td class="n">27,090</td><td class="n">100%</td></tr>
+<tr class="sub"><td>Rev 2.1 for comparison</td><td class="n">24,360</td><td></td></tr>
+<tr class="sub"><td>With 10% contingency for price drift and a broken part</td><td class="n">≈ 29,800</td><td></td></tr>
+</table></div>
+
+<h2>Not in the total</h2>
+<ul>
+ <li><b>3D printer access</b> for sprockets, idlers, rollers and 98 TPU links. Printing TPU at a service bureau costs about ₹6,000 to ₹9,000 for the track set; a direct-drive printer of your own prints it for the filament cost already counted.</li>
+ <li><b>Spot welder</b> for the pack, about ₹2,500, or buy the pre-built pack noted in section 3.</li>
+ <li><b>Spares worth holding</b>: 1 gearmotor (₹950), 1 BTS7960 (₹400), 1 VL53L0X (₹300), 1 support roller, 12 track links. About ₹2,200.</li>
+ <li><b>Cloud side</b>: a free-tier MQTT broker and dashboard cover the 10 Hz telemetry; no cost at one rover.</li>
+</ul>
+
+<h2>Where the money goes and where it can move</h2>
+<ul>
+ <li><b>Two items are 26% of the build</b>: the gamepad and the battery pack. Neither is a place to cut. The gamepad is the safety link and the pack sets runtime and the CG.</li>
+ <li><b>Δ10 adds ₹2,730</b>, all in the drive train and frame. The short-track alternative is a flipper mechanism, which needs two more motors, drivers and a pivot and costs more than the extra 236 mm of chassis.</li>
+ <li><b>Cheapest meaningful saving</b>: BME280 instead of BME680 (₹950) if air-quality readings are not part of the use, and 3 mm side plates (₹500).</li>
+ <li><b>Do not substitute</b> L298N for BTS7960, TT motors for the encoder gearmotors, or a LiPo pouch without a BMS. Each one was removed in the Rev 2.0 audit (Δ4, Δ5) for a reason on sheet 2.</li>
+ <li><b>Biggest risk to the estimate</b> is the frame cutting quote. Get two quotes with the DXF before ordering the electronics.</li>
+</ul>
+</main>

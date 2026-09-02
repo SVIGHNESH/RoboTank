@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RoboTank 3D Model</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+</head>
+<body>
+  <header>
+    <h1>Stair-climbing tracked IoT rover, 3D model</h1>
+    <span class="id">RT-100-3D · Rev 2.2 · built from RT-100-01 dimensions</span>
+  </header>
+  <div class="wrap">
+    <canvas id="c" tabindex="0" aria-label="Interactive 3D model of the rover. Drag to orbit, scroll to zoom."></canvas>
+    <div class="hud">
+      <div class="card">
+        <h2>View</h2>
+        <div class="row">
+          <button data-view="iso" aria-pressed="true">Isometric</button>
+          <button data-view="side">Side</button>
+          <button data-view="front">Front</button>
+          <button data-view="top">Top</button>
+          <button data-view="rear">Rear ¾</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Show</h2>
+        <label class="t"><input type="checkbox" id="lid" checked> Lid</label>
+        <label class="t"><input type="checkbox" id="deck" checked> Deck plate and electronics</label>
+        <label class="t"><input type="checkbox" id="tracks" checked> Tracks</label>
+        <label class="t"><input type="checkbox" id="payload" checked> Payload box</label>
+        <label class="t"><input type="checkbox" id="stair"> Place on stair</label>
+        <label class="t"><input type="checkbox" id="spin"> Auto-rotate</label>
+      </div>
+      <div class="card">
+        <h2>Climb</h2>
+        <div class="row"><button id="play">Play</button><button id="reset">Reset</button><button id="auto" aria-pressed="true">Auto</button></div>
+        <label class="t"><input type="radio" name="trk" value="rev21" checked> Rev 2.1, 450 mm</label>
+        <label class="t"><input type="radio" name="trk" value="delta10"> Rev 2.2 Δ10, 700 mm</label>
+        <label class="t"><input type="radio" name="trk" value="custom"> Custom, from the fields below</label>
+        <p class="kb">Auto off: W / S drive · A / D turn · Space brake</p>
+        <div class="ro">
+          <span>Phase</span><b id="phase">Ready</b>
+          <span>Pitch</span><b id="pitch">0°</b>
+          <span>Mode</span><b id="mode">LEVEL DRIVE</b>
+          <span>Belt L / R</span><b id="belt">0.00 / 0.00 m/s</b>
+          <span>Slip</span><b id="slip">0%</b>
+          <span>Time</span><b id="time">0.0 s</b>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Dimensions</h2>
+        <details open>
+          <summary>Stair</summary>
+          <div class="fields">
+            <label>Riser <span>mm</span><input type="number" data-stair="riser" min="60" max="300" step="5"></label>
+            <label>Tread <span>mm</span><input type="number" data-stair="tread" min="150" max="500" step="5"></label>
+            <label>Steps <span>n</span><input type="number" data-stair="steps" min="1" max="8" step="1"></label>
+            <label>Width <span>mm</span><input type="number" data-stair="depth" min="200" max="2000" step="10"></label>
+          </div>
+        </details>
+        <details open>
+          <summary>Rover</summary>
+          <div class="fields">
+            <label>Wheelbase <span>mm</span><input type="number" data-rover="wheelbase" min="200" max="1200" step="10"></label>
+            <label>Sprocket Ø <span>mm</span><input type="number" data-rover="sprocketD" min="40" max="200" step="2"></label>
+            <label>Idler Ø <span>mm</span><input type="number" data-rover="idlerD" min="30" max="200" step="2"></label>
+            <label>Idler raise <span>mm</span><input type="number" data-rover="idlerRaise" min="0" max="80" step="1"></label>
+            <label>Track width <span>mm</span><input type="number" data-rover="trackW" min="20" max="120" step="2"></label>
+            <label>Bay width <span>mm</span><input type="number" data-rover="bayW" min="80" max="400" step="5"></label>
+            <label>Height <span>mm</span><input type="number" data-rover="topY" min="60" max="300" step="5"></label>
+            <label>Mass <span>kg</span><input type="number" data-rover="massKg" min="0.5" max="30" step="0.05"></label>
+            <label>CG forward <span>mm</span><input type="number" data-rover="cgX" min="-300" max="300" step="2"></label>
+            <label>CG height <span>mm</span><input type="number" data-rover="cgY" min="20" max="300" step="2"></label>
+          </div>
+        </details>
+        <details open>
+          <summary>Payload box on lid</summary>
+          <div class="fields">
+            <label>Cube size <span>mm</span><input type="number" data-rover="payloadSize" min="0" max="400" step="10"></label>
+            <label>Weight <span>kg</span><input type="number" data-rover="payloadMass" min="0" max="20" step="0.1"></label>
+            <label>Position fwd <span>mm</span><input type="number" data-rover="payloadX" min="-400" max="400" step="10"></label>
+          </div>
+        </details>
+        <p class="kb" id="stairinfo"></p>
+      </div>
+    </div>
+    <div class="hint">drag to orbit · scroll to zoom · right-drag to pan</div>
+    <div class="note" id="note" hidden></div>
+    <div class="dims" id="dims"></div>
+    <div class="legend">
+      <i style="background:#C9CCD1"></i><span>6061 aluminium frame</span>
+      <i style="background:#2A2A2A"></i><span>TPU track, 30 mm lugs</span>
+      <i style="background:#6E7A8A"></i><span>Sprocket, idler, motors</span>
+      <i style="background:#2F6F4F"></i><span>Battery 3S 5200</span>
+      <i style="background:#1F5F9F"></i><span>ESP32-S3, drivers, buck</span>
+      <i style="background:#B42318"></i><span>E-stop, IMU, ToF sensors</span>
+    </div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

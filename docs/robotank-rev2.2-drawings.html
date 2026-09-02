@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RoboTank Rev 2 Blueprint</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --desk:#D6D4CC; --paper:#FBFAF7; --ink:#1A1A1A; --muted:#5A5A57; --rule:#B9B7B0; --faint:#E6E4DD;
+    --rev:#B42318;
+    --fs:"Barlow",system-ui,sans-serif; --fd:"Barlow Semi Condensed","Arial Narrow",sans-serif; --fm:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  body{background:var(--desk);color:var(--ink);font-family:var(--fs);margin:0;padding:28px 20px;font-size:13px;line-height:1.4}
+  .sheet{position:relative;max-width:1560px;margin:0 auto 34px;background:var(--paper);border:1.5px solid var(--ink);padding:22px;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+  .inner{border:1.5px solid var(--ink);padding:18px 18px 0;display:flex;flex-direction:column;gap:16px;min-height:200px}
+  .zt,.zb,.zl,.zr{position:absolute;display:flex;justify-content:space-around;font-family:var(--fd);font-size:11px;color:var(--muted);letter-spacing:.06em}
+  .zt{top:4px;left:22px;right:22px}.zb{bottom:4px;left:22px;right:22px}
+  .zl,.zr{flex-direction:column;top:22px;bottom:22px;width:14px;align-items:center}.zl{left:4px}.zr{right:4px}
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px 24px}
+  .panel{min-width:0}
+  .span4{grid-column:span 4}.span5{grid-column:span 5}.span6{grid-column:span 6}.span7{grid-column:span 7}.span8{grid-column:span 8}.span12{grid-column:span 12}
+  .panel h2{font-family:var(--fd);font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase;margin:0 0 8px;padding-bottom:4px;border-bottom:2px solid var(--ink);display:inline-block;min-width:60%}
+  figure{margin:0}
+  svg{display:block;max-width:100%;height:auto;color:var(--ink);font-family:var(--fd);font-size:12px;font-weight:500}
+  svg .mono{font-family:var(--fm);font-weight:400}
+  figcaption{color:var(--muted);font-size:12px;margin-top:6px;max-width:72ch;line-height:1.45}
+  table{border-collapse:collapse;width:100%;font-size:12px;font-variant-numeric:tabular-nums}
+  th,td{text-align:left;padding:4px 8px;border:1px solid var(--rule);vertical-align:top}
+  th{font-family:var(--fd);font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-size:11px;background:var(--faint)}
+  td.mono{font-family:var(--fm);white-space:nowrap;font-size:11.5px}
+  td.rev{color:var(--rev);font-weight:500}
+  .revs s{color:var(--muted)}
+  .revs b{font-weight:600}
+  .tb{display:grid;grid-template-columns:1fr 1.15fr;border-top:1.5px solid var(--ink);margin:4px -18px 0;padding:0}
+  .tb-rev{padding:10px 14px;border-right:1.5px solid var(--ink)}
+  .tb-rev table{font-size:11.5px}
+  .tb-main{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:auto}
+  .f{border-left:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:6px 10px;display:flex;flex-direction:column;gap:2px;min-height:44px}
+  .f span{font-family:var(--fd);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .f b{font-family:var(--fd);font-weight:600;font-size:14px}
+  .f b.mono{font-family:var(--fm);font-weight:500;font-size:13px}
+  .f i{font-style:normal;font-family:var(--fd);font-size:13px;color:var(--muted)}
+  .f.owner{grid-column:span 2}.f.title{grid-column:span 4}
+  .f.title b{font-size:17px;letter-spacing:.02em}
+  @media (max-width:1000px){.span4,.span5,.span6,.span7,.span8{grid-column:span 12}.tb{grid-template-columns:1fr}.tb-rev{border-right:0;border-bottom:1.5px solid var(--ink)}.tb-main{grid-template-columns:repeat(3,1fr)}}
+  @media print{body{background:#fff;padding:0}.sheet{box-shadow:none;page-break-after:always}}
+</style>
+</head>
+<body>
+
+<section class="sheet" aria-label="Sheet 1 of 4, General arrangement">
+  <div class="zt"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div><div class="zb"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
+  <div class="zl"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div><div class="zr"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+  <div class="inner">
+    <div class="grid">
+  <div class="panel span6">
+    <h2>General arrangement - side, level ground</h2>
+    <figure>
+    <svg viewBox="0 0 790 300" role="img" aria-label="Dimensioned side view: 706 overall length, 620 wheelbase, 80 mm rear sprocket, 60 mm front idler raised 15 mm, two 30 mm support rollers per side, 35 mm ground clearance, 110 mm overall height">
+      <defs><marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <line x1="20" y1="216" x2="770" y2="216" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M30,216 l-8,8 M60,216 l-8,8 M90,216 l-8,8 M700,216 l-8,8 M730,216 l-8,8 M760,216 l-8,8" stroke="currentColor" stroke-width="1" opacity=".6"/>
+      <rect x="70" y="117" width="578" height="67" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <line x1="70" y1="150" x2="648" y2="150" stroke="currentColor" stroke-width="1" stroke-dasharray="5 3" opacity=".7"/>
+      <g transform="translate(648,132) rotate(20)"><rect x="0" y="-7" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"/></g>
+      <path d="M80,144 L638,139 A27,27 0 0 1 644,193 L80,216 A36,36 0 0 1 80,144 Z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+      <path d="M116.0,180.0 L109.0,187.8 L111.2,198.0 L101.2,201.2 L98.0,211.2 L87.8,209.0 L80.0,216.0 L72.2,209.0 L62.0,211.2 L58.8,201.2 L48.8,198.0 L51.0,187.8 L44.0,180.0 L51.0,172.2 L48.8,162.0 L58.8,158.8 L62.0,148.8 L72.2,151.0 L80.0,144.0 L87.8,151.0 L98.0,148.8 L101.2,158.8 L111.2,162.0 L109.0,172.2 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <circle cx="80" cy="180" r="5" fill="currentColor"/>
+      <circle cx="638" cy="166" r="22" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <circle cx="638" cy="166" r="4" fill="currentColor"/>
+      <circle cx="266" cy="196" r="13.5" fill="none" stroke="#B42318" stroke-width="1.5"/><circle cx="266" cy="196" r="3" fill="#B42318"/>
+      <circle cx="452" cy="196" r="13.5" fill="none" stroke="#B42318" stroke-width="1.5"/><circle cx="452" cy="196" r="3" fill="#B42318"/>
+      <rect x="626" y="163" width="24" height="6" rx="3" fill="none" stroke="#B42318" stroke-width="1.2"/>
+      <path d="M100,215 v5 M127,214 v5 M154,213 v5 M181,212 v5 M208,211 v5 M235,210 v5 M262,208 v5 M289,207 v5 M316,206 v5 M343,205 v5 M370,204 v5 M397,203 v5 M424,202 v5 M451,201 v5 M478,200 v5 M505,198 v5 M532,197 v5 M559,196 v5 M586,195 v5 M613,194 v5" stroke="currentColor" stroke-width="2"/>
+      <line x1="44" y1="250" x2="679" y2="250" stroke="currentColor" stroke-width="1" marker-start="url(#g)" marker-end="url(#g)"/>
+      <line x1="44" y1="222" x2="44" y2="256" stroke="currentColor" stroke-width="1" opacity=".5"/><line x1="679" y1="222" x2="679" y2="256" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <text x="360" y="266" text-anchor="middle" class="mono" fill="currentColor">706 overall</text>
+      <line x1="80" y1="236" x2="638" y2="236" stroke="currentColor" stroke-width="1" marker-start="url(#g)" marker-end="url(#g)"/>
+      <text x="360" y="232" text-anchor="middle" class="mono" font-size="11" fill="currentColor">620 wheelbase</text>
+      <line x1="80" y1="60" x2="266" y2="60" stroke="#B42318" stroke-width="1" marker-start="url(#g)" marker-end="url(#g)"/><line x1="266" y1="60" x2="452" y2="60" stroke="#B42318" stroke-width="1" marker-start="url(#g)" marker-end="url(#g)"/>
+      <text x="173" y="56" text-anchor="middle" class="mono" font-size="11" fill="#B42318">207</text><text x="359" y="56" text-anchor="middle" class="mono" font-size="11" fill="#B42318">207</text>
+      <line x1="266" y1="64" x2="266" y2="182" stroke="#B42318" stroke-width="1" opacity=".5"/><line x1="452" y1="64" x2="452" y2="182" stroke="#B42318" stroke-width="1" opacity=".5"/>
+      <line x1="710" y1="216" x2="710" y2="117" stroke="currentColor" stroke-width="1" marker-start="url(#g)" marker-end="url(#g)"/>
+      <text x="716" y="170" class="mono" fill="currentColor">110</text>
+      <line x1="684" y1="216" x2="684" y2="184" stroke="currentColor" stroke-width="1" marker-start="url(#g)" marker-end="url(#g)"/>
+      <text x="688" y="204" class="mono" font-size="11" fill="currentColor">35 clr</text>
+      <text x="80" y="100" text-anchor="middle" class="mono" font-size="11" fill="currentColor">Ø80 sprocket, 12 T</text>
+      <line x1="80" y1="104" x2="80" y2="142" stroke="currentColor" stroke-width="1" marker-end="url(#g)"/>
+      <text x="638" y="100" text-anchor="middle" class="mono" font-size="11" fill="currentColor">Ø60 idler, +15 raised</text>
+      <line x1="638" y1="104" x2="638" y2="137" stroke="currentColor" stroke-width="1" marker-end="url(#g)"/>
+      <text x="359" y="86" text-anchor="middle" class="mono" font-size="11" fill="#B42318">Ø30 support rollers ×2 per side, 608 bearings (Δ10)</text>
+      <text x="520" y="40" class="mono" font-size="11" fill="#B42318">tensioner slot ±8</text>
+      <line x1="590" y1="44" x2="634" y2="160" stroke="#B42318" stroke-width="1" marker-end="url(#g)"/>
+      <text x="44" y="30" font-size="11" fill="currentColor">deck plate 4 mm Al, 35 above floor</text>
+      <line x1="150" y1="34" x2="220" y2="148" stroke="currentColor" stroke-width="1" marker-end="url(#g)"/>
+      <text x="44" y="290" class="mono" font-size="11" fill="currentColor" opacity=".6">scale 0.9 px/mm · rear ← → front · 49 links × 30 pitch = 1470 track</text>
+    </svg>
+    <figcaption>Δ10 wheelbase. The 620 mm bottom run needs two support rollers per side or it sags and the lugs skip the sprocket under climb torque. Track loop length is set by the link count so the idler slot only takes up wear.</figcaption>
+    </figure>
+  </div>
+  <div class="panel span6">
+    <h2>Section A-A - through the battery bay</h2>
+    <figure>
+    <svg viewBox="0 0 520 300" role="img" aria-label="Front cross-section: two 50 mm tracks flank a 160 mm chassis bay; battery sits under a 4 mm deck plate, electronics above; 260 mm overall width, 110 mm height">
+      <defs><marker id="h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <line x1="20" y1="220" x2="500" y2="220" stroke="currentColor" stroke-width="1.5"/>
+      <!-- tracks -->
+      <rect x="60" y="148" width="45" height="72" fill="none" stroke="currentColor" stroke-width="2.5"/>
+      <rect x="355" y="148" width="45" height="72" fill="none" stroke="currentColor" stroke-width="2.5"/>
+      <path d="M60,148 l45,72 M105,148 l-45,72 M355,148 l45,72 M400,148 l-45,72" stroke="currentColor" stroke-width=".8" opacity=".5"/>
+      <!-- axle through -->
+      <line x1="40" y1="184" x2="420" y2="184" stroke="currentColor" stroke-width="1" stroke-dasharray="6 3" opacity=".5"/>
+      <!-- chassis side plates -->
+      <rect x="105" y="121" width="4" height="67" fill="currentColor"/>
+      <rect x="351" y="121" width="4" height="67" fill="currentColor"/>
+      <!-- floor plate & deck plate -->
+      <rect x="105" y="184" width="250" height="4" fill="currentColor"/>
+      <rect x="105" y="147" width="250" height="4" fill="#B42318"/>
+      <!-- battery under deck -->
+      <rect x="135" y="156" width="190" height="24" fill="none" stroke="#B42318" stroke-width="2"/>
+      <text x="230" y="172" text-anchor="middle" font-size="11" fill="#B42318">3S 5200 mAh, strapped to floor</text>
+      <!-- electronics above deck -->
+      <rect x="150" y="125" width="70" height="18" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="185" y="138" text-anchor="middle" font-size="10" fill="currentColor">ESP32-S3</text>
+      <rect x="240" y="129" width="14" height="14" fill="none" stroke="#B42318" stroke-width="1.2"/><text x="266" y="140" font-size="10" fill="#B42318">IMU</text>
+      <rect x="295" y="125" width="44" height="18" fill="none" stroke="currentColor" stroke-width="1.2"/><text x="317" y="138" text-anchor="middle" font-size="10" fill="currentColor">Buck</text>
+      <!-- lid -->
+      <rect x="105" y="121" width="250" height="3" fill="currentColor" opacity=".6"/>
+      <!-- dims -->
+      <line x1="60" y1="252" x2="400" y2="252" stroke="currentColor" stroke-width="1" marker-start="url(#h)" marker-end="url(#h)"/>
+      <text x="230" y="268" text-anchor="middle" class="mono" fill="currentColor">260 overall</text>
+      <line x1="109" y1="236" x2="351" y2="236" stroke="currentColor" stroke-width="1" marker-start="url(#h)" marker-end="url(#h)"/>
+      <text x="230" y="232" text-anchor="middle" class="mono" font-size="11" fill="currentColor">160 bay</text>
+      <line x1="60" y1="140" x2="105" y2="140" stroke="currentColor" stroke-width="1" marker-start="url(#h)" marker-end="url(#h)"/>
+      <text x="82" y="134" text-anchor="middle" class="mono" font-size="11" fill="currentColor">50</text>
+      <line x1="440" y1="220" x2="440" y2="121" stroke="currentColor" stroke-width="1" marker-start="url(#h)" marker-end="url(#h)"/>
+      <text x="446" y="174" class="mono" fill="currentColor">110</text>
+      <line x1="470" y1="220" x2="470" y2="188" stroke="currentColor" stroke-width="1" marker-start="url(#h)" marker-end="url(#h)"/>
+      <text x="476" y="208" class="mono" font-size="11" fill="currentColor">35</text>
+      <line x1="30" y1="188" x2="30" y2="147" stroke="#B42318" stroke-width="1" marker-start="url(#h)" marker-end="url(#h)"/>
+      <text x="36" y="164" class="mono" font-size="11" fill="#B42318">41 bay</text>
+      <text x="230" y="60" text-anchor="middle" font-size="11" fill="currentColor">Side plates 4 mm 6061 Al · deck and floor 4 mm · lid 2 mm</text>
+      <text x="230" y="78" text-anchor="middle" font-size="11" fill="currentColor">Axle Ø8 through 608 bearings in the side plates; motors inboard</text>
+      <text x="230" y="96" text-anchor="middle" font-size="11" fill="#B42318">Mass split: 1.35 kg below deck, 0.6 kg above, 2.05 kg tracks, rollers and frame</text>
+    </svg>
+    <figcaption>Everything heavy lives under the deck plate, on the floor, which is what puts the CG at 88 mm on a 110 mm tall vehicle. The section is unchanged by Δ10; only the length grew. The IMU is bonded to the deck directly above the battery, not to the lid.</figcaption>
+    </figure>
+  </div>
+  <div class="panel span7">
+    <h2>Plan view - internal layout</h2>
+    <figure>
+    <svg viewBox="0 0 800 330" role="img" aria-label="Top-down internal layout at the 620 mm wheelbase: battery forward, ESP32-S3 at centre, two BTS7960 drivers and encoder gearmotors at the rear, support rollers under the tracks, sensors on the front edge">
+      <defs><marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <rect x="60" y="50" width="635" height="45" rx="20" fill="none" stroke="currentColor" stroke-width="2"/>
+      <rect x="60" y="239" width="635" height="45" rx="20" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M80,50 v45 M110,50 v45 M140,50 v45 M170,50 v45 M200,50 v45 M230,50 v45 M260,50 v45 M290,50 v45 M320,50 v45 M350,50 v45 M380,50 v45 M410,50 v45 M440,50 v45 M470,50 v45 M500,50 v45 M530,50 v45 M560,50 v45 M590,50 v45 M620,50 v45 M650,50 v45 M680,50 v45" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <path d="M80,239 v45 M110,239 v45 M140,239 v45 M170,239 v45 M200,239 v45 M230,239 v45 M260,239 v45 M290,239 v45 M320,239 v45 M350,239 v45 M380,239 v45 M410,239 v45 M440,239 v45 M470,239 v45 M500,239 v45 M530,239 v45 M560,239 v45 M590,239 v45 M620,239 v45 M650,239 v45 M680,239 v45" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <rect x="253" y="58" width="27" height="29" fill="none" stroke="#B42318" stroke-width="1.2" stroke-dasharray="3 2"/><rect x="439" y="58" width="27" height="29" fill="none" stroke="#B42318" stroke-width="1.2" stroke-dasharray="3 2"/>
+      <rect x="253" y="247" width="27" height="29" fill="none" stroke="#B42318" stroke-width="1.2" stroke-dasharray="3 2"/><rect x="439" y="247" width="27" height="29" fill="none" stroke="#B42318" stroke-width="1.2" stroke-dasharray="3 2"/>
+      <rect x="70" y="95" width="620" height="144" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="78" y="100" width="70" height="18" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="78" y="216" width="70" height="18" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="148" y="103" width="8" height="12" fill="#B42318"/><rect x="148" y="219" width="8" height="12" fill="#B42318"/>
+      <text x="80" y="132" font-size="10.5" fill="currentColor">Motor L 1:70</text>
+      <text x="80" y="212" font-size="10.5" fill="currentColor">Motor R 1:70</text>
+      <rect x="158" y="125" width="58" height="34" fill="none" stroke="#B42318" stroke-width="1.5"/>
+      <text x="187" y="146" text-anchor="middle" font-size="10" fill="#B42318">BTS7960 L</text>
+      <rect x="158" y="176" width="58" height="34" fill="none" stroke="#B42318" stroke-width="1.5"/>
+      <text x="187" y="197" text-anchor="middle" font-size="10" fill="#B42318">BTS7960 R</text>
+      <rect x="300" y="122" width="66" height="90" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <text x="333" y="160" text-anchor="middle" font-size="11" fill="currentColor">ESP32-S3</text>
+      <text x="333" y="174" text-anchor="middle" font-size="10" fill="currentColor">WiFi · BLE</text>
+      <rect x="408" y="160" width="16" height="16" fill="none" stroke="#B42318" stroke-width="1.5"/>
+      <text x="416" y="190" text-anchor="middle" font-size="10" fill="#B42318">IMU</text>
+      <g transform="translate(416,168)"><circle r="5" fill="none" stroke="#B42318" stroke-width="1"/><path d="M0,-5 A5,5 0 0 1 5,0 L0,0 Z M0,5 A5,5 0 0 1 -5,0 L0,0 Z" fill="#B42318"/></g>
+      <rect x="440" y="147" width="126" height="40" fill="none" stroke="#B42318" stroke-width="2"/>
+      <text x="503" y="164" text-anchor="middle" font-size="11" fill="#B42318">3S 5200 mAh + BMS</text>
+      <text x="503" y="178" text-anchor="middle" font-size="10" fill="#B42318">below deck, on floor plate</text>
+      <rect x="440" y="104" width="30" height="16" fill="none" stroke="currentColor" stroke-width="1"/><text x="455" y="115" text-anchor="middle" font-size="9" fill="currentColor">15 A</text>
+      <rect x="476" y="104" width="30" height="16" fill="none" stroke="currentColor" stroke-width="1"/><text x="491" y="115" text-anchor="middle" font-size="9" fill="currentColor">SW</text>
+      <rect x="512" y="104" width="40" height="16" fill="none" stroke="currentColor" stroke-width="1"/><text x="532" y="115" text-anchor="middle" font-size="9" fill="currentColor">Buck 5V</text>
+      <circle cx="110" cy="167" r="12" fill="none" stroke="#B42318" stroke-width="2"/><text x="110" y="171" text-anchor="middle" font-size="9" fill="#B42318">STOP</text>
+      <rect x="440" y="212" width="40" height="16" fill="none" stroke="currentColor" stroke-width="1"/><text x="460" y="223" text-anchor="middle" font-size="9" fill="currentColor">BME680</text>
+      <rect x="682" y="150" width="8" height="34" fill="currentColor"/>
+      <rect x="670" y="100" width="12" height="10" fill="#B42318"/><rect x="670" y="224" width="12" height="10" fill="#B42318"/>
+      <rect x="678" y="122" width="12" height="16" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <text x="710" y="105" font-size="11" fill="#B42318">Cliff ToF ×2</text>
+      <line x1="708" y1="102" x2="684" y2="104" stroke="#B42318" stroke-width="1"/>
+      <line x1="708" y1="108" x2="684" y2="226" stroke="#B42318" stroke-width="1"/>
+      <text x="710" y="132" font-size="11" fill="currentColor">Front ToF</text>
+      <text x="710" y="170" font-size="11" fill="currentColor">Camera</text>
+      <line x1="708" y1="166" x2="692" y2="166" stroke="currentColor" stroke-width="1"/>
+      <text x="710" y="228" font-size="11" fill="currentColor">Front</text>
+      <text x="266" y="44" text-anchor="middle" font-size="10" fill="#B42318">rollers (Δ10)</text>
+      <path d="M156,109 H182 V125 M156,225 H182 V210" stroke="#B42318" stroke-width="1" stroke-dasharray="3 2" fill="none"/>
+      <path d="M216,142 H300 M216,193 H300" stroke="currentColor" stroke-width="1"/>
+      <line x1="60" y1="305" x2="695" y2="305" stroke="currentColor" stroke-width="1" marker-start="url(#b)" marker-end="url(#b)"/>
+      <text x="377" y="322" text-anchor="middle" class="mono" fill="currentColor">706</text>
+      <line x1="36" y1="50" x2="36" y2="284" stroke="currentColor" stroke-width="1" marker-start="url(#b)" marker-end="url(#b)"/>
+      <text x="22" y="172" text-anchor="middle" class="mono" fill="currentColor" transform="rotate(-90 22 172)">260</text>
+      <text x="700" y="30" class="mono" fill="currentColor" opacity=".7">front →</text>
+    </svg>
+    <figcaption>Heavy items sit forward and on the floor plate. The IMU is mounted at the CG so pitch reads clean of chassis flex. The I²C chain to the front rangefinders is now about 650 mm, so the pull-ups sit at the far end. Encoder returns (dashed) close the speed loop per side.</figcaption>
+    </figure>
+  </div>
+  <div class="panel span5">
+    <h2>Drive module and track lug</h2>
+    <figure>
+    <svg viewBox="0 0 380 345" role="img" aria-label="Rear drive module: 12-tooth sprocket on an 8 mm axle, gearmotor with hall encoder inboard, and the track lug profile at 30 mm pitch">
+      <defs><marker id="k" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <path d="M162.0,100.0 L150.2,113.5 L153.7,131.0 L136.8,136.8 L131.0,153.7 L113.5,150.2 L100.0,162.0 L86.5,150.2 L69.0,153.7 L63.2,136.8 L46.3,131.0 L49.8,113.5 L38.0,100.0 L49.8,86.5 L46.3,69.0 L63.2,63.2 L69.0,46.3 L86.5,49.8 L100.0,38.0 L113.5,49.8 L131.0,46.3 L136.8,63.2 L153.7,69.0 L150.2,86.5 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="100" cy="100" r="36" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/>
+      <circle cx="100" cy="100" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M100,92 v16 M92,100 h16" stroke="currentColor" stroke-width="1"/>
+      <!-- keyed shaft flat -->
+      <path d="M94,95 h12" stroke="#B42318" stroke-width="2"/>
+      <!-- track segment engaged -->
+      <path d="M30,160 H200" stroke="currentColor" stroke-width="3"/>
+      <path d="M40,160 v8 M70,160 v8 M100,160 v8 M130,160 v8 M160,160 v8 M190,160 v8" stroke="currentColor" stroke-width="3"/>
+      <text x="100" y="30" text-anchor="middle" class="mono" font-size="11" fill="currentColor">Ø80 PCD · 12 T · 30 pitch</text>
+      <text x="215" y="106" font-size="11" fill="#B42318">Ø8 D-shaft, M4 grub</text>
+      <line x1="213" y1="102" x2="112" y2="97" stroke="#B42318" stroke-width="1" marker-end="url(#k)"/>
+      <!-- motor side elevation, inboard -->
+      <rect x="230" y="130" width="120" height="36" rx="4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <rect x="230" y="136" width="36" height="24" fill="none" stroke="currentColor" stroke-width="1"/>
+      <text x="248" y="151" text-anchor="middle" font-size="9" fill="currentColor">1:70</text>
+      <rect x="350" y="138" width="16" height="20" fill="none" stroke="#B42318" stroke-width="1.5"/>
+      <text x="290" y="151" text-anchor="middle" font-size="10" fill="currentColor">JGB37-520</text>
+      <text x="358" y="176" text-anchor="middle" font-size="9" fill="#B42318">hall enc</text>
+      <text x="290" y="184" text-anchor="middle" font-size="9.5" fill="currentColor">11 PPR × 70 = 770 CPR</text>
+      <line x1="230" y1="148" x2="200" y2="148" stroke="currentColor" stroke-width="2"/>
+      <text x="215" y="140" text-anchor="middle" font-size="9" fill="currentColor">6 mm</text>
+      <!-- lug profile -->
+      <text x="30" y="216" font-size="11" fill="currentColor">Lug profile, section</text>
+      <path d="M30,270 H350" stroke="currentColor" stroke-width="1"/>
+      <path d="M30,270 V246 h20 l6,-14 h20 l6,14 h28 l6,-14 h20 l6,14 h28 l6,-14 h20 l6,14 h28 l6,-14 h20 l6,14 h28 l6,-14 h20 l6,14 h20 V270" fill="none" stroke="currentColor" stroke-width="2"/>
+      <line x1="56" y1="284" x2="136" y2="284" stroke="currentColor" stroke-width="1" marker-start="url(#k)" marker-end="url(#k)"/>
+      <text x="96" y="298" text-anchor="middle" class="mono" font-size="11" fill="currentColor">30 pitch</text>
+      <line x1="356" y1="270" x2="356" y2="246" stroke="currentColor" stroke-width="1" marker-start="url(#k)" marker-end="url(#k)"/>
+      <text x="362" y="262" class="mono" font-size="11" fill="currentColor">8 base</text>
+      <line x1="16" y1="246" x2="16" y2="232" stroke="#B42318" stroke-width="1" marker-start="url(#k)" marker-end="url(#k)"/>
+      <text x="22" y="226" class="mono" font-size="10" fill="#B42318">6 lug</text>
+      <text x="190" y="316" text-anchor="middle" font-size="10.5" fill="currentColor">TPU 95A or moulded rubber, chevron lug, 50 wide</text><text x="190" y="332" text-anchor="middle" font-size="10.5" fill="currentColor">edge lug undercut 10° for nosing grip</text>
+    </svg>
+    <figcaption>One bolt-on module per side: motor, encoder, axle, bearings and sprocket. The lug pitch equals the sprocket pitch so the drive is positive, not friction. Δ10 adds two Ø30 support rollers per side on M8 stub axles between sprocket and idler.</figcaption>
+    </figure>
+  </div>
+  <div class="panel span12">
+    <h2>Revisions 1.0 → 2.2</h2>
+    <table class="revs"><tr><th>Mark</th><th>Change and basis</th></tr><tr><td class="mono rev">Δ1</td><td><b>Track length 210 → 450 mm.</b> Sized from nosing pitch 333 mm × 1.35. Raised front idler for 35° approach.</td></tr><tr><td class="mono rev">Δ2</td><td><b>Battery moved low and forward.</b> CG 150 mm from rear axle, 88 mm high. <s>Rear battery + camera mast</s> removed.</td></tr><tr><td class="mono rev">Δ3</td><td><b>Camera fixed, 20° down, on front face.</b> <s>Pan/tilt servos</s> deleted; no mast, no servo power.</td></tr><tr><td class="mono rev">Δ4</td><td><b>Drive: 2 × BTS7960, one per side.</b> <s>L298N</s> removed. Motors: 2 × 37 mm 12 V gearmotor, 1:70, 100 rpm, hall encoders.</td></tr><tr><td class="mono rev">Δ5</td><td><b>Power tree completed.</b> 3S 5200 mAh with BMS, 15 A blade fuse, main switch, XT60, 5 V 3 A buck. Motors fed direct from battery.</td></tr><tr><td class="mono rev">Δ6</td><td><b>One controller.</b> ESP32-S3 with on-board OV2640. <s>Second ESP32-CAM</s> and its undefined link removed.</td></tr><tr><td class="mono rev">Δ7</td><td><b>Sensors all 3.3 V.</b> BME680 only (<s>MQ-135</s> dropped), VL53L1X front, 2 × VL53L0X cliff sensors under the front idler, MPU-6050 IMU at the CG.</td></tr><tr><td class="mono rev">Δ8</td><td><b>Descent is controlled.</b> IMU pitch selects descent mode: 40% speed cap, active PWM braking, hold on stick release, cliff stop.</td></tr><tr><td class="mono rev">Δ9</td><td><b>Safety path.</b> BLE gamepad is the primary link, WiFi is telemetry only. 500 ms link watchdog stops the motors. Physical E-stop opens the motor supply.</td></tr><tr><td class="mono rev">Δ10</td><td><b>Wheelbase 384 → 620 mm, overall 470 → 706 mm.</b> Rigid-body simulation of Rev 2.1 showed the rover cannot climb the first 180 mm riser from the floor: with the rear on the floor and the nosing sliding along the belt, the CG never passes the step edge and the rover backflips at any friction, torque or speed. At 620 mm the front reaches the second nosing as the rear lifts. Adds two Ø30 support rollers per side, 49-link tracks, longer plates and lid. Mass 3.07 → 4.0 kg.</td></tr></table>
+  </div>
+
+    </div>
+    <div class="tb">
+      <div class="tb-rev">
+        <table><tr><th>Rev</th><th>Date</th><th>Description</th></tr>
+        <tr><td class="mono">1.0</td><td class="mono">2025-05-18</td><td>Concept sheet</td></tr>
+        <tr><td class="mono">2.0</td><td class="mono">2026-09-02</td><td>Audit fixes Δ1-Δ9, geometry to scale</td></tr>
+        <tr><td class="mono">2.1</td><td class="mono">2026-09-02</td><td>Detail issue: GA, section, drive, electrical, BOM</td></tr>
+        <tr><td class="mono">2.2</td><td class="mono">2026-09-02</td><td>Δ10: wheelbase 620, support rollers, 49-link tracks, 4.0 kg</td></tr></table>
+      </div>
+      <div class="tb-main">
+        <div class="f owner"><span>Project</span><b>RoboTank</b></div>
+        <div class="f title"><span>Title</span><b>Stair-climbing tracked IoT rover</b><i>General arrangement</i></div>
+        <div class="f"><span>Drawing no.</span><b class="mono">RT-100-01</b></div>
+        <div class="f"><span>Sheet</span><b class="mono">1 / 4</b></div>
+        <div class="f"><span>Rev</span><b class="mono">2.2</b></div>
+        <div class="f"><span>Scale</span><b class="mono">0.9 px/mm</b></div>
+        <div class="f"><span>Units</span><b class="mono">mm</b></div>
+        <div class="f"><span>Projection</span><b>Third angle</b></div>
+        <div class="f"><span>Date</span><b class="mono">2026-09-02</b></div>
+        <div class="f"><span>Status</span><b>For review</b></div>
+        <div class="f"><span>Checked</span><b>-</b></div>
+        <div class="f"><span>Approved</span><b>-</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sheet" aria-label="Sheet 2 of 4, Stair performance">
+  <div class="zt"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div><div class="zb"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
+  <div class="zl"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div><div class="zr"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+  <div class="inner">
+    <div class="grid">
+  <div class="panel span8">
+    <h2>Side elevation - on stair, to scale</h2>
+    <figure>
+    <svg viewBox="0 0 900 470" role="img" aria-label="Δ10 rover at the moment its rear leaves the floor on the first riser: the belt bottom run lies on the line through the first nosing and the raised front idler is 43 mm short of the second nosing; the centre of gravity is drawn with its plumb line">
+      <defs>
+        <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+        <marker id="ay" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#B42318"/></marker>
+      </defs>
+      <path d="M0,444 H300 V300 H524 V156 H748 V12 H900" fill="none" stroke="currentColor" stroke-width="2"/>
+      <g transform="translate(76,444) rotate(-32.7)">
+        <rect x="-32" y="-64" width="560" height="64" rx="32" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <path d="M496,-64 L536,-40 L528,-8" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <circle cx="0" cy="-32" r="22" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="0" cy="-32" r="5" fill="currentColor"/>
+        <circle cx="496" cy="-38" r="18" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="496" cy="-38" r="4" fill="currentColor"/>
+        <circle cx="166" cy="-20" r="12" fill="none" stroke="#B42318" stroke-width="1.2"/><circle cx="332" cy="-20" r="12" fill="none" stroke="#B42318" stroke-width="1.2"/>
+        <path d="M-10,0 v6 M20,0 v6 M50,0 v6 M80,0 v6 M110,0 v6 M140,0 v6 M170,0 v6 M200,0 v6 M230,0 v6 M260,0 v6 M290,0 v6 M320,0 v6 M350,0 v6 M380,0 v6 M410,0 v6 M440,0 v6 M470,0 v6" stroke="currentColor" stroke-width="2"/>
+        <rect x="-10" y="-124" width="512" height="60" fill="none" stroke="currentColor" stroke-width="2"/>
+        <rect x="250" y="-112" width="126" height="26" fill="none" stroke="#B42318" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <g transform="translate(502,-100) rotate(20)"><rect x="0" y="-8" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M16,-4 l18,-3 M16,4 l18,3" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/></g>
+        <rect x="496" y="-72" width="6" height="8" fill="currentColor"/>
+        <rect x="482" y="-64" width="10" height="4" fill="#B42318"/>
+        <g transform="translate(282,-70)"><circle r="8" fill="none" stroke="#B42318" stroke-width="1.5"/><path d="M0,-8 A8,8 0 0 1 8,0 L0,0 Z M0,8 A8,8 0 0 1 -8,0 L0,0 Z" fill="#B42318"/></g>
+      </g>
+      <line x1="275" y1="233" x2="275" y2="323" stroke="#B42318" stroke-width="1" stroke-dasharray="4 3"/>
+      <circle cx="76" cy="444" r="7" fill="none" stroke="#B42318" stroke-width="2"/>
+      <circle cx="300" cy="300" r="7" fill="none" stroke="#B42318" stroke-width="2"/>
+      <circle cx="524" cy="156" r="7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
+      <line x1="87" y1="461" x2="311" y2="317" stroke="currentColor" stroke-width="1" marker-start="url(#a)" marker-end="url(#a)"/>
+      <text x="200" y="412" transform="rotate(-32.7 200 412)" text-anchor="middle" class="mono" fill="currentColor">333 floor to nosing 1</text>
+      <line x1="311" y1="317" x2="535" y2="173" stroke="currentColor" stroke-width="1" marker-start="url(#a)" marker-end="url(#a)"/>
+      <text x="425" y="268" transform="rotate(-32.7 425 268)" text-anchor="middle" class="mono" fill="currentColor">333 nosing pitch</text>
+      <line x1="790" y1="156" x2="790" y2="12" stroke="currentColor" stroke-width="1" marker-start="url(#a)" marker-end="url(#a)"/>
+      <text x="798" y="90" class="mono" fill="currentColor">180 riser</text>
+      <text x="760" y="34" class="mono" fill="currentColor">280 tread →</text>
+      <path d="M136,444 A60,60 0 0 0 126,412" fill="none" stroke="currentColor" stroke-width="1"/>
+      <text x="140" y="436" class="mono" fill="currentColor">32.7°</text>
+      <text x="20" y="40" fill="#B42318">Battery, low and forward</text>
+      <line x1="60" y1="46" x2="226" y2="219" stroke="#B42318" stroke-width="1" marker-end="url(#ay)"/>
+      <text x="20" y="150" fill="currentColor">Track 700 long, 50 wide, 620 straight run</text>
+      <line x1="22" y1="156" x2="60" y2="380" stroke="currentColor" stroke-width="1" marker-end="url(#a)"/>
+      <text x="560" y="60" fill="currentColor">Fixed camera 20° down, no mast</text>
+      <line x1="558" y1="56" x2="450" y2="93" stroke="currentColor" stroke-width="1" marker-end="url(#a)"/>
+      <text x="560" y="80" fill="currentColor">ToF front (VL53L1X)</text>
+      <line x1="558" y1="76" x2="458" y2="117" stroke="currentColor" stroke-width="1" marker-end="url(#a)"/>
+      <text x="560" y="100" fill="#B42318">Cliff ToF, downward</text>
+      <line x1="558" y1="96" x2="451" y2="130" stroke="#B42318" stroke-width="1" marker-end="url(#ay)"/>
+      <text x="560" y="120" fill="currentColor">Raised idler, 43 short of nosing 2 here</text>
+      <line x1="558" y1="116" x2="481" y2="138" stroke="currentColor" stroke-width="1" marker-end="url(#a)"/>
+      <text x="560" y="140" fill="#B42318">Support rollers ×2 (Δ10)</text>
+      <text x="560" y="392" fill="#B42318">CG 352 from rear contact, 88 above track</text>
+      <text x="560" y="408" fill="#B42318" font-size="11">19 mm past nosing 1 along the belt: front drops onto nosing 2 as pitch passes 34°</text>
+      <line x1="558" y1="388" x2="283" y2="237" stroke="#B42318" stroke-width="1" marker-end="url(#ay)"/>
+      <line x1="558" y1="136" x2="355" y2="242" stroke="#B42318" stroke-width="1" marker-end="url(#ay)"/>
+      <text x="560" y="330" fill="#B42318">Rear contact leaving the floor</text>
+      <line x1="558" y1="334" x2="84" y2="446" stroke="#B42318" stroke-width="1" marker-end="url(#ay)"/>
+      <text x="20" y="460" class="mono" fill="currentColor" opacity=".7">scale 0.8 px per mm · overall 706 L × 260 W × 110 H · pose from the rigid-body simulation at t = 2.9 s</text>
+    </svg>
+    <figcaption>The first riser is the hard case. From the floor, the belt line through nosing 1 needs 663 mm to reach nosing 2. The 620 mm straight run leaves the raised idler 43 mm short at the instant the rear lifts, but the CG is already 19 mm past nosing 1 along the belt, so the rover rotates forward, not back, and the idler lands on nosing 2 within a degree. Rev 2.1 at 450 mm had its CG 100 mm behind the pivot at this moment and went over backwards.</figcaption>
+    </figure>
+  </div>
+  <div class="panel span4">
+    <h2>Sizing check</h2>
+    <table>
+      <tr><th>Item</th><th>v2.1</th><th>v2.2 Δ10</th><th>Basis</th></tr>
+      <tr><td>Track length</td><td class="mono">450 mm</td><td class="mono">700 mm</td><td>620 straight run + idler reach vs 663 floor to nosing 2</td></tr>
+      <tr><td>First riser from floor</td><td class="mono">backflip</td><td class="mono">climbs</td><td>Rigid-body simulation, friction 1.0</td></tr>
+      <tr><td>Step / pitch rating</td><td class="mono">180 mm, 35°</td><td class="mono">180 mm, 35°</td><td>Standard 180 × 280 stair</td></tr>
+      <tr><td>Mass, all-up</td><td class="mono">3.07 kg</td><td class="mono">4.0 kg</td><td>BOM sheet 4</td></tr>
+      <tr><td>Tractive force at 35°</td><td class="mono">26 N</td><td class="mono">31 N</td><td>m·g·sin θ + 8 N rolling</td></tr>
+      <tr><td>Torque per side</td><td class="mono">0.52 N·m</td><td class="mono">0.61 N·m</td><td>15.5 N × 40 mm sprocket</td></tr>
+      <tr><td>Motor rating</td><td class="mono">1.0 N·m, 1.9×</td><td class="mono">1.0 N·m, 1.6×</td><td>37 mm 1:70 gearmotor</td></tr>
+      <tr><td>Climb speed</td><td class="mono">0.29 m/s</td><td class="mono">0.29 m/s</td><td>70% cap, 40 mm sprocket</td></tr>
+      <tr><td>Motor driver</td><td class="mono">2 × BTS7960</td><td class="mono">2 × BTS7960</td><td>43 A, 16 mΩ</td></tr>
+      <tr><td>Peak current</td><td class="mono">6 A</td><td class="mono">7 A</td><td>2 × 3 A climb + 1 A logic</td></tr>
+      <tr><td>Runtime</td><td class="mono">~1.5 h</td><td class="mono">~1.3 h</td><td>5.2 Ah at 3.5 A average</td></tr>
+      <tr><td>Support rollers</td><td class="mono">none</td><td class="mono">2 per side</td><td>620 mm run sags 5 to 8 mm unsupported</td></tr>
+      <tr><td>Control latency</td><td class="mono">&lt; 30 ms BLE</td><td class="mono">&lt; 30 ms BLE</td><td>Cloud round trip unfit for stairs</td></tr>
+    </table>
+  </div>
+
+  <div class="panel span12">
+    <h2>Climb sequence and sensor cues</h2>
+    <figure>
+    <svg viewBox="0 0 1640 200" role="img" aria-label="Four phases of one step with the 700 mm rover: approach where the front ToF sees the riser, lift where the rear leaves the floor as the idler reaches the second nosing, bridge where the rover lies across two nosings, and crest where the cliff sensors see the tread">
+      
+      <g transform="translate(0,0)">
+        <path d="M0,160 H150 V115 H240 V70 H400" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <g transform="translate(60,160) rotate(0)"><rect x="-88" y="-18" width="176" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="2"/><rect x="-80" y="-36" width="154" height="18" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="10" cy="-24" r="3" fill="#B42318"/></g>
+        <text x="200" y="14" text-anchor="middle" font-size="12" fill="#B42318">1 Approach</text>
+        <text x="200" y="186" text-anchor="middle" font-size="10" fill="currentColor">front ToF 120 mm → slow to 40%</text>
+      </g>
+      
+      <g transform="translate(410,0)">
+        <path d="M0,160 H150 V115 H240 V70 H400" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <g transform="translate(150,118) rotate(-26.6)"><rect x="-88" y="-18" width="176" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="2"/><rect x="-80" y="-36" width="154" height="18" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="10" cy="-24" r="3" fill="#B42318"/></g>
+        <text x="200" y="14" text-anchor="middle" font-size="12" fill="#B42318">2 Lift</text>
+        <text x="200" y="186" text-anchor="middle" font-size="10" fill="currentColor">rear leaves floor, idler reaches nosing 2</text>
+      </g>
+      
+      <g transform="translate(820,0)">
+        <path d="M0,160 H150 V115 H240 V70 H400" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <g transform="translate(195,92.5) rotate(-26.6)"><rect x="-88" y="-18" width="176" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="2"/><rect x="-80" y="-36" width="154" height="18" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="10" cy="-24" r="3" fill="#B42318"/></g>
+        <text x="200" y="14" text-anchor="middle" font-size="12" fill="#B42318">3 Bridge</text>
+        <text x="200" y="186" text-anchor="middle" font-size="10" fill="currentColor">two nosings loaded, yaw hold</text>
+      </g>
+      
+      <g transform="translate(1230,0)">
+        <path d="M0,160 H150 V115 H240 V70 H400" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <g transform="translate(326,61) rotate(-6)"><rect x="-88" y="-18" width="176" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="2"/><rect x="-80" y="-36" width="154" height="18" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="10" cy="-24" r="3" fill="#B42318"/></g>
+        <text x="200" y="14" text-anchor="middle" font-size="12" fill="#B42318">4 Crest</text>
+        <text x="200" y="186" text-anchor="middle" font-size="10" fill="currentColor">cliff ToF sees tread, pitch < 10°</text>
+      </g>
+      <path d="M150,150 H148" stroke="#B42318" stroke-width="1" stroke-dasharray="3 2"/>
+      <line x1="405" y1="8" x2="405" y2="192" stroke="currentColor" stroke-width="1" opacity=".3"/>
+      <line x1="815" y1="8" x2="815" y2="192" stroke="currentColor" stroke-width="1" opacity=".3"/>
+      <line x1="1225" y1="8" x2="1225" y2="192" stroke="currentColor" stroke-width="1" opacity=".3"/>
+    </svg>
+    <figcaption>The operator only holds forward. Speed caps, mode changes and the yaw hold come from the front ToF, the IMU and the encoders in that order. With the Δ10 length the lift phase ends on the second nosing instead of a pivot; on descent the sequence runs in reverse and the cliff sensors are the first cue.</figcaption>
+    </figure>
+  </div>
+
+    </div>
+    <div class="tb">
+      <div class="tb-rev">
+        <table><tr><th>Rev</th><th>Date</th><th>Description</th></tr>
+        <tr><td class="mono">1.0</td><td class="mono">2025-05-18</td><td>Concept sheet</td></tr>
+        <tr><td class="mono">2.0</td><td class="mono">2026-09-02</td><td>Audit fixes Δ1-Δ9, geometry to scale</td></tr>
+        <tr><td class="mono">2.1</td><td class="mono">2026-09-02</td><td>Detail issue: GA, section, drive, electrical, BOM</td></tr>
+        <tr><td class="mono">2.2</td><td class="mono">2026-09-02</td><td>Δ10: wheelbase 620, support rollers, 49-link tracks, 4.0 kg</td></tr></table>
+      </div>
+      <div class="tb-main">
+        <div class="f owner"><span>Project</span><b>RoboTank</b></div>
+        <div class="f title"><span>Title</span><b>Stair-climbing tracked IoT rover</b><i>Stair performance</i></div>
+        <div class="f"><span>Drawing no.</span><b class="mono">RT-100-02</b></div>
+        <div class="f"><span>Sheet</span><b class="mono">2 / 4</b></div>
+        <div class="f"><span>Rev</span><b class="mono">2.2</b></div>
+        <div class="f"><span>Scale</span><b class="mono">0.8 px/mm</b></div>
+        <div class="f"><span>Units</span><b class="mono">mm</b></div>
+        <div class="f"><span>Projection</span><b>Third angle</b></div>
+        <div class="f"><span>Date</span><b class="mono">2026-09-02</b></div>
+        <div class="f"><span>Status</span><b>For review</b></div>
+        <div class="f"><span>Checked</span><b>-</b></div>
+        <div class="f"><span>Approved</span><b>-</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sheet" aria-label="Sheet 3 of 4, Electrical">
+  <div class="zt"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div><div class="zb"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
+  <div class="zl"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div><div class="zr"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+  <div class="inner">
+    <div class="grid">
+  <div class="panel span7">
+    <h2>Power and signal tree</h2>
+    <figure>
+    <svg viewBox="0 0 620 350" role="img" aria-label="Battery through fuse and switch feeds the motor drivers directly and a 5 volt buck for the ESP32-S3; the ESP32 drives PWM to the drivers, reads encoders and I2C sensors, and links by BLE for control and WiFi for telemetry">
+      <defs><marker id="c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="cy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#B42318"/></marker></defs>
+      <!-- power chain -->
+      <rect x="10" y="20" width="96" height="44" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <text x="58" y="38" text-anchor="middle" fill="currentColor">3S 5200 mAh</text><text x="58" y="54" text-anchor="middle" font-size="10.5" fill="currentColor">Li-ion + BMS</text>
+      <rect x="126" y="20" width="54" height="44" fill="none" stroke="#B42318" stroke-width="1.5"/>
+      <text x="153" y="38" text-anchor="middle" fill="#B42318">Fuse</text><text x="153" y="54" text-anchor="middle" font-size="10.5" fill="#B42318">15 A</text>
+      <rect x="200" y="20" width="60" height="44" fill="none" stroke="#B42318" stroke-width="1.5"/>
+      <text x="230" y="38" text-anchor="middle" fill="#B42318">Switch</text><text x="230" y="54" text-anchor="middle" font-size="10.5" fill="#B42318">+ E-stop</text>
+      <line x1="106" y1="42" x2="126" y2="42" stroke="currentColor" stroke-width="3"/>
+      <line x1="180" y1="42" x2="200" y2="42" stroke="currentColor" stroke-width="3"/>
+      <line x1="260" y1="42" x2="300" y2="42" stroke="currentColor" stroke-width="3"/>
+      <text x="270" y="34" font-size="10" class="mono" fill="currentColor">11.1 V</text>
+      <!-- bus split -->
+      <line x1="300" y1="42" x2="300" y2="250" stroke="currentColor" stroke-width="3"/>
+      <line x1="300" y1="100" x2="380" y2="100" stroke="currentColor" stroke-width="3" marker-end="url(#c)"/>
+      <line x1="300" y1="180" x2="380" y2="180" stroke="currentColor" stroke-width="3" marker-end="url(#c)"/>
+      <line x1="300" y1="250" x2="330" y2="250" stroke="currentColor" stroke-width="3" marker-end="url(#c)"/>
+      <!-- drivers -->
+      <rect x="380" y="78" width="84" height="44" fill="none" stroke="#B42318" stroke-width="1.5"/>
+      <text x="422" y="96" text-anchor="middle" fill="#B42318">BTS7960 L</text><text x="422" y="112" text-anchor="middle" font-size="10.5" fill="#B42318">43 A H-bridge</text>
+      <rect x="380" y="158" width="84" height="44" fill="none" stroke="#B42318" stroke-width="1.5"/>
+      <text x="422" y="176" text-anchor="middle" fill="#B42318">BTS7960 R</text><text x="422" y="192" text-anchor="middle" font-size="10.5" fill="#B42318">43 A H-bridge</text>
+      <!-- motors -->
+      <line x1="464" y1="100" x2="520" y2="100" stroke="currentColor" stroke-width="3" marker-end="url(#c)"/>
+      <line x1="464" y1="180" x2="520" y2="180" stroke="currentColor" stroke-width="3" marker-end="url(#c)"/>
+      <circle cx="546" cy="100" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="546" y="97" text-anchor="middle" font-size="10.5" fill="currentColor">Motor L</text><text x="546" y="109" text-anchor="middle" font-size="9.5" fill="currentColor">+ encoder</text>
+      <circle cx="546" cy="180" r="24" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="546" y="177" text-anchor="middle" font-size="10.5" fill="currentColor">Motor R</text><text x="546" y="189" text-anchor="middle" font-size="9.5" fill="currentColor">+ encoder</text>
+      <!-- buck -->
+      <rect x="330" y="230" width="70" height="40" fill="none" stroke="#B42318" stroke-width="1.5"/>
+      <text x="365" y="247" text-anchor="middle" fill="#B42318">Buck 5 V</text><text x="365" y="262" text-anchor="middle" font-size="10.5" fill="#B42318">3 A sync</text>
+      <!-- ESP32 -->
+      <rect x="120" y="120" width="120" height="150" fill="none" stroke="currentColor" stroke-width="2"/>
+      <text x="180" y="145" text-anchor="middle" font-size="14" fill="currentColor">ESP32-S3</text>
+      <text x="180" y="162" text-anchor="middle" font-size="10.5" fill="currentColor">OV2640 on DVP</text>
+      <text x="180" y="176" text-anchor="middle" font-size="10.5" fill="currentColor">3.3 V LDO on board</text>
+      <text x="180" y="200" text-anchor="middle" font-size="10.5" fill="currentColor">PID per side</text>
+      <text x="180" y="214" text-anchor="middle" font-size="10.5" fill="currentColor">pitch state machine</text>
+      <text x="180" y="228" text-anchor="middle" font-size="10.5" fill="currentColor">500 ms link watchdog</text>
+      <line x1="330" y1="250" x2="240" y2="250" stroke="currentColor" stroke-width="2" marker-end="url(#c)"/>
+      <text x="285" y="244" text-anchor="middle" font-size="10" class="mono" fill="currentColor">5 V</text>
+      <!-- pwm and encoder signals -->
+      <line x1="240" y1="135" x2="380" y2="90" stroke="currentColor" stroke-width="1" marker-end="url(#c)"/>
+      <line x1="240" y1="150" x2="380" y2="170" stroke="currentColor" stroke-width="1" marker-end="url(#c)"/>
+      <text x="312" y="74" font-size="10" fill="currentColor">PWM + DIR ×2</text>
+      <path d="M522,124 C480,150 300,165 240,190" fill="none" stroke="#B42318" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#cy)"/>
+      <text x="330" y="150" font-size="10" fill="#B42318">encoders A/B ×2</text>
+      <!-- I2C bus -->
+      <line x1="120" y1="200" x2="60" y2="200" stroke="currentColor" stroke-width="1"/>
+      <line x1="60" y1="100" x2="60" y2="300" stroke="currentColor" stroke-width="1"/>
+      <text x="66" y="290" font-size="10" class="mono" fill="currentColor">I²C 3.3 V</text>
+      <g font-size="10.5" fill="currentColor">
+        <rect x="8" y="88" width="46" height="24" fill="none" stroke="currentColor" stroke-width="1"/><text x="31" y="104" text-anchor="middle">IMU</text>
+        <rect x="8" y="128" width="46" height="24" fill="none" stroke="currentColor" stroke-width="1"/><text x="31" y="144" text-anchor="middle">BME680</text>
+        <rect x="8" y="168" width="46" height="24" fill="none" stroke="currentColor" stroke-width="1"/><text x="31" y="184" text-anchor="middle">ToF fwd</text>
+        <rect x="8" y="208" width="46" height="24" fill="none" stroke="#B42318" stroke-width="1"/><text x="31" y="224" text-anchor="middle" fill="#B42318">Cliff L</text>
+        <rect x="8" y="248" width="46" height="24" fill="none" stroke="#B42318" stroke-width="1"/><text x="31" y="264" text-anchor="middle" fill="#B42318">Cliff R</text>
+      </g>
+      <path d="M54,100 H60 M54,140 H60 M54,180 H60 M54,220 H60 M54,260 H60" stroke="currentColor" stroke-width="1"/>
+      <!-- wireless -->
+      <path d="M180,270 V300" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3"/>
+      <rect x="110" y="300" width="70" height="24" fill="none" stroke="#B42318" stroke-width="1.5"/><text x="145" y="316" text-anchor="middle" font-size="10.5" fill="#B42318">BLE control</text>
+      <rect x="190" y="300" width="80" height="24" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3"/><text x="230" y="316" text-anchor="middle" font-size="10.5" fill="currentColor">WiFi telemetry</text>
+      <!-- legend -->
+      <g transform="translate(430,282)" font-size="10.5" fill="currentColor">
+        <line x1="0" y1="0" x2="26" y2="0" stroke="currentColor" stroke-width="3"/><text x="32" y="4">motor power</text>
+        <line x1="0" y1="16" x2="26" y2="16" stroke="currentColor" stroke-width="1"/><text x="32" y="20">signal</text>
+        <line x1="0" y1="32" x2="26" y2="32" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3"/><text x="32" y="36">wireless</text>
+        <line x1="0" y1="48" x2="26" y2="48" stroke="#B42318" stroke-width="2"/><text x="32" y="52" fill="#B42318">new in v2</text>
+      </g>
+    </svg>
+    <figcaption>Motor current never passes through the logic supply. The HC-SR04 and MQ-135 are gone, so nothing on the bus needs 5 V or a level shifter. Control arrives over BLE with a 500 ms watchdog; the cloud only ever receives telemetry.</figcaption>
+    </figure>
+  </div>
+
+  <div class="panel span5">
+    <h2>ESP32-S3 pin map</h2>
+    <table>
+      <tr><th>GPIO</th><th>Signal</th><th>To</th></tr>
+      <tr><td class="mono">1</td><td>I²C SDA</td><td>IMU, BME680, ToF ×3</td></tr>
+      <tr><td class="mono">2</td><td>I²C SCL</td><td>same bus, 3.3 V, 4k7</td></tr>
+      <tr><td class="mono">14</td><td>PWM L</td><td>BTS7960 L RPWM/LPWM via DIR</td></tr>
+      <tr><td class="mono">21</td><td>DIR L</td><td>BTS7960 L</td></tr>
+      <tr><td class="mono">47</td><td>PWM R</td><td>BTS7960 R</td></tr>
+      <tr><td class="mono">48</td><td>DIR R</td><td>BTS7960 R</td></tr>
+      <tr><td class="mono">19 / 20</td><td>ENC L A/B</td><td>PCNT unit 0</td></tr>
+      <tr><td class="mono">45 / 46</td><td>ENC R A/B</td><td>PCNT unit 1</td></tr>
+      <tr><td class="mono">3</td><td>VBAT sense</td><td>ADC, 10k:2k2 divider</td></tr>
+      <tr><td class="mono">0</td><td>E-stop sense</td><td>NC contact, pull-up</td></tr>
+      <tr><td class="mono">4-18, 38-42</td><td>DVP camera</td><td>OV2640, fixed by board</td></tr>
+    </table>
+    <figcaption>Pins chosen from those the WROOM-CAM board leaves free of the camera bus. GPIO 0, 3, 45 and 46 are strapping pins: keep them high-impedance at boot and verify on the exact board revision.</figcaption>
+  </div>
+  <div class="panel span12">
+    <h2>Harness and connectors</h2>
+    <table>
+      <tr><th>Run</th><th>Wire</th><th>Connector</th><th>Note</th></tr>
+      <tr><td>Battery → fuse → switch → bus</td><td class="mono">14 AWG</td><td>XT60</td><td>Under 120 mm total, E-stop NC in series</td></tr>
+      <tr><td>Bus → BTS7960 ×2</td><td class="mono">16 AWG</td><td>Screw terminal</td><td>1000 µF low-ESR at each driver</td></tr>
+      <tr><td>BTS7960 → motor</td><td class="mono">16 AWG</td><td>XT30</td><td>Twisted pair, ferrite bead</td></tr>
+      <tr><td>Bus → buck → ESP32 5 V</td><td class="mono">22 AWG</td><td>JST-XH 2</td><td>Ground star at buck output</td></tr>
+      <tr><td>ESP32 → BTS7960 logic</td><td class="mono">26 AWG</td><td>JST-XH 4</td><td>PWM, DIR, EN, GND per driver</td></tr>
+      <tr><td>Encoder → ESP32</td><td class="mono">26 AWG</td><td>JST-XH 6</td><td>Shielded, 3.3 V hall supply</td></tr>
+      <tr><td>I²C bus</td><td class="mono">26 AWG</td><td>JST-SH 4 (Qwiic)</td><td>Daisy chain, about 650 mm total with Δ10; 4k7 pull-ups at the front end</td></tr>
+      <tr><td>Cliff ToF ×2</td><td class="mono">26 AWG</td><td>JST-SH 4 + XSHUT</td><td>Separate XSHUT lines for addressing</td></tr>
+    </table>
+    <figcaption>Motor current and logic share only the battery negative at one star point at the buck. Signal runs never lie parallel to motor leads.</figcaption>
+  </div>
+
+    </div>
+    <div class="tb">
+      <div class="tb-rev">
+        <table><tr><th>Rev</th><th>Date</th><th>Description</th></tr>
+        <tr><td class="mono">1.0</td><td class="mono">2025-05-18</td><td>Concept sheet</td></tr>
+        <tr><td class="mono">2.0</td><td class="mono">2026-09-02</td><td>Audit fixes Δ1-Δ9, geometry to scale</td></tr>
+        <tr><td class="mono">2.1</td><td class="mono">2026-09-02</td><td>Detail issue: GA, section, drive, electrical, BOM</td></tr>
+        <tr><td class="mono">2.2</td><td class="mono">2026-09-02</td><td>Δ10: wheelbase 620, support rollers, 49-link tracks, 4.0 kg</td></tr></table>
+      </div>
+      <div class="tb-main">
+        <div class="f owner"><span>Project</span><b>RoboTank</b></div>
+        <div class="f title"><span>Title</span><b>Stair-climbing tracked IoT rover</b><i>Electrical</i></div>
+        <div class="f"><span>Drawing no.</span><b class="mono">RT-100-03</b></div>
+        <div class="f"><span>Sheet</span><b class="mono">3 / 4</b></div>
+        <div class="f"><span>Rev</span><b class="mono">2.2</b></div>
+        <div class="f"><span>Scale</span><b class="mono">NTS</b></div>
+        <div class="f"><span>Units</span><b class="mono">mm</b></div>
+        <div class="f"><span>Projection</span><b>Third angle</b></div>
+        <div class="f"><span>Date</span><b class="mono">2026-09-02</b></div>
+        <div class="f"><span>Status</span><b>For review</b></div>
+        <div class="f"><span>Checked</span><b>-</b></div>
+        <div class="f"><span>Approved</span><b>-</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="sheet" aria-label="Sheet 4 of 4, Control, firmware and BOM">
+  <div class="zt"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div><div class="zb"><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
+  <div class="zl"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div><div class="zr"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+  <div class="inner">
+    <div class="grid">
+  <div class="panel span6">
+    <h2>Stair control states</h2>
+    <figure>
+    <svg viewBox="0 0 620 230" role="img" aria-label="State machine: level drive switches to climb or descend on IMU pitch; descend caps speed and brakes actively; any cliff detection, link loss or E-stop enters the stopped state">
+      <defs><marker id="d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      <marker id="dy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#B42318"/></marker></defs>
+      <rect x="230" y="20" width="150" height="54" rx="27" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <text x="305" y="42" text-anchor="middle" font-size="13" fill="currentColor">LEVEL DRIVE</text>
+      <text x="305" y="60" text-anchor="middle" font-size="10.5" fill="currentColor">full speed, PID per track</text>
+      <rect x="20" y="120" width="170" height="60" rx="8" fill="none" stroke="currentColor" stroke-width="1.5"/>
+      <text x="105" y="142" text-anchor="middle" font-size="13" fill="currentColor">CLIMB</text>
+      <text x="105" y="158" text-anchor="middle" font-size="10.5" fill="currentColor">torque priority, 70% speed cap</text>
+      <text x="105" y="172" text-anchor="middle" font-size="10.5" fill="currentColor">yaw hold from encoders</text>
+      <rect x="225" y="120" width="170" height="60" rx="8" fill="none" stroke="#B42318" stroke-width="2"/>
+      <text x="310" y="142" text-anchor="middle" font-size="13" fill="#B42318">DESCEND</text>
+      <text x="310" y="158" text-anchor="middle" font-size="10.5" fill="#B42318">40% speed cap, active PWM brake</text>
+      <text x="310" y="172" text-anchor="middle" font-size="10.5" fill="#B42318">hold on stick release</text>
+      <rect x="430" y="120" width="170" height="60" rx="8" fill="none" stroke="#B42318" stroke-width="2"/>
+      <text x="515" y="142" text-anchor="middle" font-size="13" fill="#B42318">STOPPED</text>
+      <text x="515" y="158" text-anchor="middle" font-size="10.5" fill="#B42318">bridges braked, motors shorted</text>
+      <text x="515" y="172" text-anchor="middle" font-size="10.5" fill="#B42318">needs operator reset</text>
+      <!-- transitions -->
+      <path d="M250,68 C200,90 150,100 120,120" fill="none" stroke="currentColor" stroke-width="1" marker-end="url(#d)"/>
+      <text x="150" y="92" font-size="10" fill="currentColor">pitch &gt; +15°</text>
+      <path d="M150,120 C190,100 220,86 240,72" fill="none" stroke="currentColor" stroke-width="1" marker-end="url(#d)" opacity="0"/>
+      <line x1="305" y1="74" x2="305" y2="120" stroke="#B42318" stroke-width="1" marker-end="url(#dy)"/>
+      <text x="312" y="100" font-size="10" fill="#B42318">pitch &lt; -15°</text>
+      <path d="M360,68 C420,90 480,100 510,120" fill="none" stroke="#B42318" stroke-width="1" marker-end="url(#dy)"/>
+      <text x="400" y="86" font-size="10" fill="#B42318">cliff ToF &lt; 60 mm</text>
+      <text x="400" y="98" font-size="10" fill="#B42318">link lost 500 ms · E-stop</text>
+      <path d="M395,150 H430" stroke="#B42318" stroke-width="1" marker-end="url(#dy)"/>
+      <path d="M190,150 H225" stroke="currentColor" stroke-width="1" marker-end="url(#d)" opacity="0"/>
+      <path d="M105,180 V205 H515 V180" fill="none" stroke="currentColor" stroke-width="1" marker-end="url(#d)" opacity=".6"/>
+      <text x="310" y="200" text-anchor="middle" font-size="10" fill="currentColor">same faults from CLIMB and DESCEND</text>
+      <text x="20" y="30" font-size="10.5" fill="currentColor">|pitch| &lt; 10° for 1 s returns to LEVEL DRIVE</text>
+    </svg>
+    <figcaption>Pitch from the IMU, not the operator, decides the mode. Descent exists as its own state so the speed cap and braking cannot be forgotten by a remote driver. Every fault path ends in the same braked, latched stop.</figcaption>
+    </figure>
+  </div>
+  <div class="panel span6">
+    <h2>Firmware loops</h2>
+    <table>
+      <tr><th>Loop</th><th>Rate</th><th>Does</th><th>Fail action</th></tr>
+      <tr><td>Encoder count</td><td class="mono">HW PCNT</td><td>Quadrature on 4 pins, no ISR load</td><td>-</td></tr>
+      <tr><td>Speed PID</td><td class="mono">200 Hz</td><td>Per-track velocity loop, yaw hold from L-R count delta</td><td>PWM 0, brake</td></tr>
+      <tr><td>IMU</td><td class="mono">100 Hz</td><td>Complementary filter, pitch and roll, mode state machine</td><td>Hold last mode, warn</td></tr>
+      <tr><td>ToF front and cliff</td><td class="mono">20 Hz</td><td>Front slow-down at 120 mm, cliff stop at 60 mm</td><td>STOPPED</td></tr>
+      <tr><td>Link watchdog</td><td class="mono">10 Hz</td><td>BLE packet age; stop after 500 ms silence</td><td>STOPPED</td></tr>
+      <tr><td>Battery</td><td class="mono">1 Hz</td><td>Pack volts via divider; cut motors at 9.6 V</td><td>Return to level, stop</td></tr>
+      <tr><td>Telemetry</td><td class="mono">10 Hz</td><td>WiFi MQTT: pitch, speeds, current, BME680, mode</td><td>Drop, never block</td></tr>
+      <tr><td>Camera stream</td><td class="mono">15 fps</td><td>OV2640 VGA MJPEG on a separate core</td><td>Drop frames</td></tr>
+    </table>
+    <figcaption>Control loops run on core 1, camera and WiFi on core 0. Nothing on core 1 waits on the network.</figcaption>
+  </div>
+  <div class="panel span12">
+    <h2>Bill of materials</h2>
+    <table>
+      <tr><th>#</th><th>Item</th><th>Spec</th><th>Qty</th><th>Mass g</th></tr>
+      <tr><td class="mono">1</td><td>Controller</td><td>ESP32-S3-WROOM-1 N8R8 CAM board, OV2640 120° lens</td><td class="mono">1</td><td class="mono">25</td></tr>
+      <tr><td class="mono">2</td><td>Gearmotor</td><td>JGB37-520, 12 V, 1:70, 100 rpm, 1.0 N·m, hall encoder</td><td class="mono">2</td><td class="mono">400</td></tr>
+      <tr><td class="mono">3</td><td>Motor driver</td><td>BTS7960 43 A module, heatsinked</td><td class="mono">2</td><td class="mono">80</td></tr>
+      <tr><td class="mono">4</td><td>Battery</td><td>3S 5200 mAh Li-ion 18650 ×6, 20 A BMS, XT60</td><td class="mono">1</td><td class="mono">330</td></tr>
+      <tr><td class="mono">5</td><td>Protection</td><td>15 A blade fuse + holder, 20 A rocker, Ø22 NC mushroom E-stop</td><td class="mono">1 set</td><td class="mono">60</td></tr>
+      <tr><td class="mono">6</td><td>Logic supply</td><td>5 V 3 A synchronous buck, 470 µF at output</td><td class="mono">1</td><td class="mono">15</td></tr>
+      <tr><td class="mono">7</td><td>IMU</td><td>MPU-6050 breakout, deck mounted</td><td class="mono">1</td><td class="mono">3</td></tr>
+      <tr><td class="mono">8</td><td>Environment</td><td>BME680 breakout, rear vent</td><td class="mono">1</td><td class="mono">3</td></tr>
+      <tr><td class="mono">9</td><td>Range</td><td>VL53L1X front; VL53L0X cliff, XSHUT addressed</td><td class="mono">1 + 2</td><td class="mono">6</td></tr>
+      <tr><td class="mono">10</td><td>Drive train</td><td>Ø80 12 T sprocket, Ø60 idler, Ø8 axles, Ø30 support rollers ×4 on M8 stubs, 608 bearings ×16</td><td class="mono">2 sets</td><td class="mono">440</td></tr>
+      <tr><td class="mono">11</td><td>Tracks</td><td>49 links × 30 mm pitch, 50 wide, TPU 95A lugs</td><td class="mono">2</td><td class="mono">770</td></tr>
+      <tr><td class="mono">12</td><td>Frame</td><td>4 mm 6061 side 706 × 110, floor and deck 640 × 160; 2 mm lid; M4 hardware</td><td class="mono">1</td><td class="mono">1750</td></tr>
+      <tr><td class="mono">13</td><td>Harness</td><td>16 AWG motor, 22 AWG signal, JST-XH, XT60</td><td class="mono">1</td><td class="mono">120</td></tr>
+      <tr><td class="mono">14</td><td>Controller link</td><td>BLE gamepad (Xbox or 8BitDo), HID mode</td><td class="mono">1</td><td class="mono">-</td></tr>
+      <tr><td></td><td><b>Total all-up</b></td><td></td><td></td><td class="mono"><b>4002</b></td></tr>
+    </table>
+    <figcaption>Sizing sheet 2 uses a 4.0 kg budget. Δ10 added 930 g, mostly plates and links. Frame mass is the lever if it grows: 3 mm side plates save about 350 g.</figcaption>
+  </div>
+
+    </div>
+    <div class="tb">
+      <div class="tb-rev">
+        <table><tr><th>Rev</th><th>Date</th><th>Description</th></tr>
+        <tr><td class="mono">1.0</td><td class="mono">2025-05-18</td><td>Concept sheet</td></tr>
+        <tr><td class="mono">2.0</td><td class="mono">2026-09-02</td><td>Audit fixes Δ1-Δ9, geometry to scale</td></tr>
+        <tr><td class="mono">2.1</td><td class="mono">2026-09-02</td><td>Detail issue: GA, section, drive, electrical, BOM</td></tr>
+        <tr><td class="mono">2.2</td><td class="mono">2026-09-02</td><td>Δ10: wheelbase 620, support rollers, 49-link tracks, 4.0 kg</td></tr></table>
+      </div>
+      <div class="tb-main">
+        <div class="f owner"><span>Project</span><b>RoboTank</b></div>
+        <div class="f title"><span>Title</span><b>Stair-climbing tracked IoT rover</b><i>Control, firmware and BOM</i></div>
+        <div class="f"><span>Drawing no.</span><b class="mono">RT-100-04</b></div>
+        <div class="f"><span>Sheet</span><b class="mono">4 / 4</b></div>
+        <div class="f"><span>Rev</span><b class="mono">2.2</b></div>
+        <div class="f"><span>Scale</span><b class="mono">NTS</b></div>
+        <div class="f"><span>Units</span><b class="mono">mm</b></div>
+        <div class="f"><span>Projection</span><b>Third angle</b></div>
+        <div class="f"><span>Date</span><b class="mono">2026-09-02</b></div>
+        <div class="f"><span>Status</span><b>For review</b></div>
+        <div class="f"><span>Checked</span><b>-</b></div>
+        <div class="f"><span>Approved</span><b>-</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

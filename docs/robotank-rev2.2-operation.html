@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.1/mermaid.min.js"></script>
+<title>RoboTank Operating Description</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#F4F3EE; --paper:#FBFAF7; --ink:#1A1A1A; --muted:#5B5B58; --rule:#C9C7BF; --faint:#ECEAE3;
+    --rev:#B42318; --ok:#1F6F3F; --warn:#9A5B00;
+    --fs:"Barlow",system-ui,sans-serif; --fd:"Barlow Semi Condensed","Arial Narrow",sans-serif; --fm:"IBM Plex Mono",ui-monospace,monospace;
+  }
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#17181A;--paper:#1F2124;--ink:#ECEAE3;--muted:#A6A49C;--rule:#3B3D42;--faint:#2A2C31;--rev:#E5675A;--ok:#5FB57F;--warn:#E0A64A}}
+  :root[data-theme="dark"]{--bg:#17181A;--paper:#1F2124;--ink:#ECEAE3;--muted:#A6A49C;--rule:#3B3D42;--faint:#2A2C31;--rev:#E5675A;--ok:#5FB57F;--warn:#E0A64A}
+  body{background:var(--bg);color:var(--ink);font-family:var(--fs);margin:0;padding:32px 20px 60px;font-size:15px;line-height:1.55}
+  main{max-width:960px;margin:0 auto;background:var(--paper);border:1px solid var(--rule);padding:40px 48px}
+  header{display:grid;grid-template-columns:1fr auto;gap:16px;border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:28px}
+  header h1{font-family:var(--fd);font-weight:700;font-size:34px;letter-spacing:.01em;margin:0;line-height:1.05;text-wrap:balance}
+  header p{margin:6px 0 0;color:var(--muted);max-width:60ch}
+  .docid{font-family:var(--fm);font-size:12px;color:var(--muted);text-align:right;line-height:1.7}
+  h2{font-family:var(--fd);font-weight:700;font-size:20px;letter-spacing:.04em;text-transform:uppercase;margin:36px 0 10px;padding-bottom:4px;border-bottom:1.5px solid var(--ink)}
+  h3{font-family:var(--fd);font-weight:600;font-size:16px;margin:20px 0 6px}
+  p{max-width:70ch;margin:0 0 10px}
+  ol,ul{max-width:70ch;padding-left:22px;margin:0 0 10px}li{margin-bottom:4px}
+  figure{margin:16px 0}
+  svg{display:block;max-width:100%;height:auto;color:var(--ink);font-family:var(--fd);font-size:12px;font-weight:500}
+  .mono,code{font-family:var(--fm);font-size:.92em}
+  figcaption{color:var(--muted);font-size:13px;margin-top:6px;max-width:72ch}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;font-variant-numeric:tabular-nums;margin:8px 0 12px}
+  th,td{text-align:left;padding:5px 9px;border:1px solid var(--rule);vertical-align:top}
+  th{font-family:var(--fd);font-weight:600;letter-spacing:.05em;text-transform:uppercase;font-size:11.5px;background:var(--faint)}
+  td.mono{white-space:nowrap}
+  .steps{counter-reset:s;list-style:none;padding:0;max-width:none}
+  .steps li{counter-increment:s;display:grid;grid-template-columns:52px 1fr;gap:12px;padding:8px 0;border-bottom:1px solid var(--rule)}
+  .steps li::before{content:"T+" counter(s);font-family:var(--fm);font-size:12px;color:var(--muted);padding-top:3px}
+  .steps b{font-family:var(--fd);font-weight:600;font-size:15px;display:block}
+  .pill{display:inline-block;font-family:var(--fd);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;padding:1px 7px;border:1px solid currentColor;border-radius:2px;margin-left:6px}
+  .pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.rev{color:var(--rev)}
+  pre.mermaid{background:transparent;margin:12px 0}
+  .widget{border:1px solid var(--ink);padding:16px 18px;margin:16px 0;display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;align-items:center}
+  .widget label{font-family:var(--fd);font-weight:600;font-size:14px;display:block;margin-bottom:6px}
+  .widget input[type=range]{width:100%;accent-color:var(--ink)}
+  .widget .out{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:14px}
+  .widget .out span:first-child{color:var(--muted);font-family:var(--fd);text-transform:uppercase;letter-spacing:.05em;font-size:11.5px;padding-top:3px}
+  .widget .out b{font-family:var(--fd);font-size:18px;font-weight:700}
+  .widget .mode{font-family:var(--fd);font-size:26px;font-weight:700;letter-spacing:.03em}
+  .bar{height:10px;background:var(--faint);border:1px solid var(--rule);position:relative}
+  .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+  .widget svg{width:100%}
+  @media (max-width:760px){main{padding:24px 18px}header{grid-template-columns:1fr}.docid{text-align:left}.widget{grid-template-columns:1fr}}
+  :focus-visible{outline:2px solid var(--rev);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<main>
+<header>
+  <div>
+    <h1>How the rover works, from power-on to the top of the stairs</h1>
+    <p>Operating description for the stair-climbing tracked IoT rover at revision 2.2, which carries the Δ10 700 mm track. It follows one session end to end: boot, pairing, driving, climbing a flight, descending, reporting, faults, and shutdown.</p>
+  </div>
+  <div class="docid">RT-100-OD<br>Rev 2.2<br>2026-09-02<br>Ref: drawings RT-100-01 to 04 Rev 2.2</div>
+</header>
+
+<h2>1. What it is</h2>
+<p>A 706 × 260 × 110 mm tracked vehicle, 4.0 kg, driven by two 12 V gearmotors through BTS7960 H-bridges from a 3S 5200 mAh battery. One ESP32-S3 runs everything: motor control, an IMU-driven stair state machine, three time-of-flight rangers, a BME680 environment sensor, an OV2640 camera, BLE for the operator and WiFi for telemetry.</p>
+<p>The design rule that shapes every section below: <b>the operator asks, the rover decides how fast.</b> Pitch, range and link health set the limits. The stick only chooses direction inside them.</p>
+
+<h2>2. Power-on and self-test</h2>
+<ol class="steps">
+  <li><div><b>Main switch closed <span class="pill">0 s</span></b>Battery reaches the bus through the 15 A fuse, the rocker switch and the E-stop's normally-closed contact. Both BTS7960 modules see 11.1 V but their enable pins are held low by pull-downs, so nothing moves. The 5 V buck comes up and the ESP32-S3 boots from flash.</div></li>
+  <li><div><b>Peripheral check <span class="pill">0.5 s</span></b>Firmware scans the I²C bus and expects five addresses: IMU, BME680, front ToF, and the two cliff ToFs brought up one at a time through their XSHUT lines so they can be given distinct addresses. A missing device is logged and the rover boots into a degraded mode that refuses to enter CLIMB.</div></li>
+  <li><div><b>IMU level reference <span class="pill">1 s</span></b>200 samples averaged while stationary give the gravity vector for this surface. If the rover is already tilted more than 5°, the stored factory reference is used instead and a warning is raised, because a level captured on a stair would make every later pitch reading wrong.</div></li>
+  <li><div><b>Encoder and driver check <span class="pill">2 s</span></b>Each motor is pulsed at 10% for 100 ms in turn. The matching encoder must count, the other must not. Battery voltage is read under that load. Failing either side blocks driving but not telemetry, so the fault is still visible remotely.</div></li>
+  <li><div><b>Radios <span class="pill ok">3 s</span></b>BLE starts advertising as an HID host and waits for the gamepad. WiFi joins the configured network in the background; a missing network never delays readiness. Status LED goes steady: <b>READY</b>. Motors are still disabled until a gamepad is bonded.</div></li>
+</ol>
+
+<h2>3. The control loop while driving</h2>
+<figure>
+<svg viewBox="0 0 900 300" role="img" aria-label="Data flow from gamepad through BLE, command mixer, mode limits, per-track PID and PWM to the motors, with encoder, IMU and ToF feedback returning to the limiter and PID">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+  <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#B42318"/></marker></defs>
+  <g fill="none" stroke="currentColor" stroke-width="1.5">
+    <rect x="10" y="90" width="110" height="50"/>
+    <rect x="170" y="90" width="120" height="50"/>
+    <rect x="340" y="90" width="130" height="50"/>
+    <rect x="520" y="70" width="120" height="40"/>
+    <rect x="520" y="120" width="120" height="40"/>
+    <rect x="690" y="70" width="90" height="40"/>
+    <rect x="690" y="120" width="90" height="40"/>
+    <circle cx="840" cy="90" r="20"/><circle cx="840" cy="140" r="20"/>
+    <rect x="340" y="210" width="130" height="44"/>
+    <rect x="520" y="210" width="120" height="44"/>
+    <rect x="170" y="210" width="120" height="44"/>
+  </g>
+  <g fill="currentColor" text-anchor="middle">
+    <text x="65" y="111">Gamepad</text><text x="65" y="127" font-size="10.5">stick x, y · buttons</text>
+    <text x="230" y="111">Command mixer</text><text x="230" y="127" font-size="10.5">v, ω → v_L, v_R</text>
+    <text x="405" y="111">Mode limiter</text><text x="405" y="127" font-size="10.5">speed cap · brake · stop</text>
+    <text x="580" y="94">PID left</text><text x="580" y="144">PID right</text>
+    <text x="735" y="94">BTS7960 L</text><text x="735" y="144">BTS7960 R</text>
+    <text x="840" y="94" font-size="11">M L</text><text x="840" y="144" font-size="11">M R</text>
+    <text x="405" y="229">IMU pitch, roll</text><text x="405" y="245" font-size="10.5">state machine, 100 Hz</text>
+    <text x="580" y="229">ToF ×3</text><text x="580" y="245" font-size="10.5">front, cliff L, cliff R · 20 Hz</text>
+    <text x="230" y="229">Link watchdog</text><text x="230" y="245" font-size="10.5">packet age &lt; 500 ms</text>
+  </g>
+  <g stroke="currentColor" stroke-width="1.2" fill="none" marker-end="url(#ar)">
+    <line x1="120" y1="115" x2="168" y2="115"/>
+    <line x1="290" y1="115" x2="338" y2="115"/>
+    <path d="M470,108 L518,90"/><path d="M470,122 L518,140"/>
+    <line x1="640" y1="90" x2="688" y2="90"/><line x1="640" y1="140" x2="688" y2="140"/>
+    <line x1="780" y1="90" x2="818" y2="90"/><line x1="780" y1="140" x2="818" y2="140"/>
+    <line x1="405" y1="208" x2="405" y2="142"/>
+    <path d="M520,232 L490,232 L470,140" />
+    <line x1="230" y1="208" x2="230" y2="142"/>
+  </g>
+  <text x="144" y="108" text-anchor="middle" font-size="10" fill="currentColor">BLE 50 Hz</text>
+  <text x="600" y="60" text-anchor="middle" font-size="10" fill="currentColor">PWM 20 kHz + DIR</text>
+  <!-- encoder feedback in red -->
+  <g stroke="#B42318" stroke-width="1.2" fill="none" stroke-dasharray="4 3" marker-end="url(#arr)">
+    <path d="M840,110 C840,190 700,180 580,180 L580,162"/>
+    <path d="M840,60 C840,20 600,20 560,20 L560,68"/>
+  </g>
+  <text x="700" y="178" font-size="10.5" fill="#B42318">encoder R, 770 counts per rev</text>
+  <text x="620" y="16" font-size="10.5" fill="#B42318">encoder L</text>
+  <text x="405" y="280" text-anchor="middle" font-size="10.5" fill="currentColor">Everything above the dashed feedback runs on core 1 at 200 Hz. Camera and WiFi run on core 0 and never block it.</text>
+</svg>
+<figcaption>One pass of the loop: the stick becomes two wheel speeds, the mode limiter clips them, two PID loops chase them using encoder counts, and the H-bridges apply the result. The IMU, rangers and watchdog only ever tighten the limiter.</figcaption>
+</figure>
+
+<h3>Command mixing</h3>
+<p>The left stick gives forward speed <span class="mono">v</span> and turn rate <span class="mono">ω</span>. Wheel targets are <span class="mono">v_L = v − ω·b/2</span> and <span class="mono">v_R = v + ω·b/2</span> with track centre spacing <span class="mono">b = 210 mm</span>. On level ground full stick is 0.42 m/s.</p>
+<h3>Per-track PID</h3>
+<p>Each side runs a velocity loop at 200 Hz on encoder counts. Gains are set for a slightly overdamped response so a wheel that unloads at a nosing does not spin up. On a stair the loop adds a yaw hold: the difference in accumulated counts between the sides is fed back as a small steering correction, which keeps the rover square to the step without the operator touching the stick.</p>
+
+<h2>4. Climbing a flight, one step at a time</h2>
+<p>The operator holds forward. Everything else is automatic. The sequence below repeats for every step. The mode names match sheet RT-100-04.</p>
+<pre class="mermaid">
+sequenceDiagram
+  autonumber
+  participant O as Operator
+  participant C as Controller
+  participant S as Sensors
+  participant D as Drivetrain
+  O->>C: stick forward, level ground
+  S-->>C: front ToF 120 mm to riser
+  C->>D: cap 40%, keep heading
+  D-->>S: idler meets riser, pitch rises
+  S-->>C: pitch > 15°
+  Note over C: LEVEL → CLIMB
+  C->>D: torque priority, cap 70%, yaw hold on
+  D-->>S: rear track leaves floor, both nosings loaded
+  S-->>C: pitch steady 33°, roll < 5°
+  C->>D: hold speed, correct yaw from encoder delta
+  D-->>S: front idler over next nosing
+  S-->>C: cliff ToFs see tread at 40 mm, pitch falling
+  Note over C: still CLIMB until pitch < 10° for 1 s
+  S-->>C: pitch < 10° for 1 s
+  Note over C: CLIMB → LEVEL
+  C->>D: restore level limits
+  C-->>O: haptic pulse: step done
+</pre>
+<p>On a continuous flight the pitch never drops below 10°, so the rover stays in CLIMB from the first riser to the landing. The per-step transitions only matter for single steps and the last one.</p>
+
+<h3>Why nothing tips</h3>
+<p>On the flight the 700 mm track lies across two nosings at all times on a 333 mm pitch, with the centre of gravity well behind the upper contact. The first riser is the case that decides the length: from the floor, the belt line through the first nosing needs 663 mm to reach the second. Rev 2.1 at 450 mm pivoted on the first nosing with its centre of gravity 100 mm behind the pivot and went over backwards in the rigid-body simulation at any friction, torque or approach speed. At 620 mm of straight run the centre of gravity is already past the nosing when the rear lifts, so the rover rotates forward and the raised idler lands on the second nosing within a degree. Roll is watched too: more than 8° means one track has slipped off a nosing, and the rover stops rather than continue on one edge.</p>
+
+<h2>5. Descending</h2>
+<p>Descent is the same sequence reversed, with two differences that make it safe.</p>
+<ul>
+  <li><div><b>The cliff sensors lead.</b> Driving toward the top step, the two downward rangers under the front idler read 40 mm to the tread. When either reads more than 60 mm the front has reached the edge. The rover stops, drops the cap to 40%, and waits for the operator to push forward again. That deliberate pause is the confirmation that a descent is intended.</div></li>
+  <li><div><b>The motors brake, they do not coast.</b> Once pitch passes −15° the mode becomes DESCEND. The H-bridges run in active-brake PWM: the motor is driven against the direction gravity pulls it, so track speed follows the PID target instead of accelerating. Releasing the stick on a slope shorts both motors through the bridge low sides, which holds the rover in place.</div></li>
+</ul>
+<div class="widget">
+  <div>
+    <label for="pitch">IMU pitch: <span id="pv" class="mono">0°</span></label>
+    <input id="pitch" type="range" min="-40" max="40" value="0" step="1" aria-describedby="modeout">
+    <p style="font-size:12.5px;color:var(--muted);margin-top:8px">Drag to see the mode and speed cap the limiter applies. Positive is nose up.</p>
+    <svg viewBox="0 0 320 120" role="img" aria-label="Rover on a slope at the selected pitch">
+      <line x1="10" y1="100" x2="310" y2="100" stroke="currentColor" stroke-width="1" opacity=".4"/>
+      <g id="rv" transform="translate(160,86) rotate(0)">
+        <rect x="-60" y="-14" width="120" height="14" rx="7" fill="none" stroke="currentColor" stroke-width="2"/>
+        <rect x="-52" y="-30" width="100" height="16" fill="none" stroke="currentColor" stroke-width="1.2"/>
+        <circle cx="-4" cy="-20" r="3" fill="#B42318"/>
+      </g>
+    </svg>
+  </div>
+  <div class="out" id="modeout" aria-live="polite">
+    <span>Mode</span><b class="mode" id="mode">LEVEL DRIVE</b>
+    <span>Speed cap</span><div><b id="cap">100%</b><div class="bar"><i id="capbar" style="width:100%"></i></div></div>
+    <span>Braking</span><b id="brk">Coast on release</b>
+    <span>Yaw hold</span><b id="yaw">Off</b>
+    <span>Max track speed</span><b id="spd" class="mono">0.42 m/s</b>
+  </div>
+</div>
+
+<h2>6. What the operator and the cloud see</h2>
+<table>
+  <tr><th>Channel</th><th>Path</th><th>Rate</th><th>Content</th><th>Can it move the rover?</th></tr>
+  <tr><td>Control</td><td>BLE HID, gamepad → ESP32</td><td class="mono">50 Hz</td><td>Stick, buttons, E-stop button</td><td><b>Yes</b>, the only channel that can</td></tr>
+  <tr><td>Haptics and LED</td><td>ESP32 → gamepad rumble, status LED</td><td>event</td><td>Step done, fault, low battery</td><td>No</td></tr>
+  <tr><td>Telemetry</td><td>WiFi, MQTT over TLS to the IoT platform</td><td class="mono">10 Hz</td><td>Mode, pitch, roll, track speeds, motor current, pack volts, ToF ranges</td><td>No</td></tr>
+  <tr><td>Environment</td><td>Same MQTT topic tree</td><td class="mono">0.2 Hz</td><td>BME680 temperature, humidity, pressure, gas resistance, IAQ index</td><td>No</td></tr>
+  <tr><td>Video</td><td>WiFi, MJPEG over HTTP from the ESP32</td><td class="mono">15 fps VGA</td><td>Camera fixed 20° down; shows the next two steps</td><td>No</td></tr>
+  <tr><td>Commands</td><td>MQTT downlink</td><td>event</td><td>Request self-test, set WiFi, change telemetry rate</td><td>No, motion commands are ignored and logged</td></tr>
+</table>
+<p>The split is deliberate. Cloud round trips of 100 to 300 ms are fine for a graph and useless for a stair edge, so the cloud path is built so it cannot drive even if someone tries. A dashboard shows live pitch, a speed trace, battery and the video, and stores the environment readings for the room the rover is sent into.</p>
+
+<h2>7. Faults and what the rover does about them</h2>
+<table>
+  <tr><th>Fault</th><th>Detected by</th><th>Within</th><th>Action</th><th>Recovery</th></tr>
+  <tr><td>Gamepad link lost</td><td>Packet age &gt; 500 ms</td><td class="mono">0.5 s</td><td>STOPPED: brake, hold, LED flash</td><td>Link returns, operator presses Resume</td></tr>
+  <tr><td>Front edge reached on level ground</td><td>Either cliff ToF &gt; 60 mm</td><td class="mono">50 ms</td><td>Stop, cap 40%, wait</td><td>Operator pushes forward again</td></tr>
+  <tr><td>Track slipped off a nosing</td><td>Roll &gt; 8° on a stair</td><td class="mono">10 ms</td><td>STOPPED, hold</td><td>Operator reverses one step in 40% mode</td></tr>
+  <tr><td>Stall</td><td>Motor current &gt; 8 A for 1 s, encoder still</td><td class="mono">1 s</td><td>PWM 0 for 2 s, then retry once</td><td>Second stall latches STOPPED</td></tr>
+  <tr><td>Low battery</td><td>Pack &lt; 10.2 V under load</td><td class="mono">1 s</td><td>Warn, cap 40%, refuse new CLIMB</td><td>Charge</td></tr>
+  <tr><td>Cutoff</td><td>Pack &lt; 9.6 V</td><td class="mono">1 s</td><td>Finish current step if climbing, then STOPPED</td><td>Charge</td></tr>
+  <tr><td>Sensor missing</td><td>I²C timeout ×3</td><td class="mono">150 ms</td><td>Degraded: level driving only</td><td>Power cycle after repair</td></tr>
+  <tr><td>E-stop pressed</td><td>Hardware, NC contact opens</td><td class="mono">0 ms</td><td>Motor supply cut, bridges de-energised</td><td>Twist to release, then self-test</td></tr>
+</table>
+<p>Every software fault ends in the same STOPPED state: both bridges braked, motors shorted, mode latched until the operator presses Resume on the gamepad. The E-stop is the one path that does not depend on software at all.</p>
+
+<h2>8. Battery, charging and shutdown</h2>
+<p>A full pack gives roughly 80 minutes of mixed driving or about 20 flights of 15 steps. Climbing draws 6 to 7 A, level driving about 2.5 A, idle with video 0.7 A. The BMS protects the cells; the firmware thresholds above are set higher so the rover always has enough left to finish the step it is on and get back to level ground.</p>
+<p>Shutdown is the switch. The controller flushes its log to flash on every mode change, so nothing is lost if power goes without notice. Charging is through the XT60 with the switch off, at 1C, using a balance charger on the BMS lead.</p>
+
+<h2>9. A complete session</h2>
+<ol>
+  <li>Switch on, wait for steady LED. Pair the gamepad. Motors enable.</li>
+  <li>Drive to the foot of the stairs on the camera view. The front ranger slows the rover as the first riser comes within 120 mm.</li>
+  <li>Hold forward. The rover climbs the flight in CLIMB with yaw hold, about 2 seconds per step, and drops back to LEVEL on the landing with a rumble. The simulation puts a three-step flight at about 7 seconds from the floor.</li>
+  <li>Survey the floor. Environment readings stream to the dashboard every 5 seconds; video shows the room.</li>
+  <li>Return to the top step. The cliff sensors stop the rover at the edge; push forward to confirm the descent. DESCEND caps speed and brakes each step down.</li>
+  <li>Drive back, switch off, charge.</li>
+</ol>
+
+<script>
+(function(){
+  var r=document.getElementById('pitch'),pv=document.getElementById('pv'),m=document.getElementById('mode'),cap=document.getElementById('cap'),bar=document.getElementById('capbar'),brk=document.getElementById('brk'),yaw=document.getElementById('yaw'),spd=document.getElementById('spd'),rv=document.getElementById('rv');
+  function upd(){
+    var p=+r.value,mode,c,b,y;
+    if(p>15){mode='CLIMB';c=70;b='Torque priority';y='On';}
+    else if(p<-15){mode='DESCEND';c=40;b='Active PWM brake, hold on release';y='On';}
+    else if(Math.abs(p)>=10){mode='TRANSITION';c=40;b='Active brake';y='On';}
+    else{mode='LEVEL DRIVE';c=100;b='Coast on release';y='Off';}
+    pv.textContent=(p>0?'+':'')+p+'°';m.textContent=mode;cap.textContent=c+'%';bar.style.width=c+'%';brk.textContent=b;yaw.textContent=y;
+    spd.textContent=(0.42*c/100).toFixed(2)+' m/s';
+    rv.setAttribute('transform','translate(160,86) rotate('+(-p)+')');
+  }
+  r.addEventListener('input',upd);upd();
+})();
+</script>
+</main>
+
+<script>mermaid.initialize({startOnLoad:true});</script>
+</body>
+</html>
